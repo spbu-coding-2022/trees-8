@@ -26,6 +26,15 @@ Add badges from somewhere like: [shields.io](https://shields.io/)
 - DEploy
 - Cross platform
 
+## Deployment
+
+To deploy this project run
+
+```bash
+  gradle build
+```
+
+
 
 ## Feedback
 
