@@ -1,18 +1,18 @@
-Home / Licenses
 Apache License 2.0
 A permissive license whose main conditions require preservation of copyright and license notices. Contributors provide an express grant of patent rights. Licensed works, modifications, and larger works may be distributed under different terms and without source code.
 
-Permissions	Conditions	Limitations
- Commercial use
- Distribution
- Modification
- Patent use
- Private use
- License and copyright notice
- State changes
- Liability
- Trademark use
- Warranty
+Permissions	Conditions
+Limitations
+Commercial use
+Distribution
+Modification
+Patent use
+Private use
+License and copyright notice
+State changes
+Liability
+Trademark use
+Warranty
                                  Apache License
                            Version 2.0, January 2004
                         http://www.apache.org/licenses/
@@ -214,22 +214,3 @@ Permissions	Conditions	Limitations
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-Copy license text to clipboard
-Suggest this license
-Make a pull request to suggest this license for a project that is not licensed. Please be polite: see if a license has already been suggested, try to suggest a license fitting for the project’s community, and keep your communication with project maintainers friendly.
-
-Enter GitHub repository URL
-How to apply this license
-Create a text file (typically named LICENSE or LICENSE.txt) in the root of your source code and copy the text of the license into the file.
-
-Optional steps
-The Apache Software Foundation recommends taking the additional step of adding a boilerplate notice to the header of each source file. You can find the notice in the appendix at the very end of the license text.
-
-Add Apache-2.0 to your project’s package description, if applicable (e.g., Node.js, Ruby, and Rust). This will ensure the license is displayed in package directories.
-
- Source
-Who’s using this license?
-Kubernetes
-PDF.js
-Swift
-About Terms of Service Help improve this pageThe content of this site is licensed under the Creative Commons Attribution 3.0 Unported License.Curated with ❤️ by GitHub, Inc. and You!
