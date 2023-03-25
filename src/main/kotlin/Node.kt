@@ -1,16 +1,23 @@
 interface Node<T : Comparable<T>, Subtype : Node<T, Subtype>> : Comparable<Node<T, Subtype>> {
-    override operator fun compareTo(other: Node<T, Subtype>): Int {
-        return data.compareTo(other.data)
-    }
 
     var data: T
     var left: Subtype?
     var right: Subtype?
 }
 
-class BSNode<K : Comparable<K>, V : Any>(override var data: KeyValue<K, V>) : Node<KeyValue<K, V>, BSNode<K, V>> {
+class BSNode<K : Comparable<K>, V>(override var data: KeyValue<K, V>) : Node<KeyValue<K, V>, BSNode<K, V>> {
     override var left: BSNode<K, V>? = null
     override var right: BSNode<K, V>? = null
+    override fun compareTo(other: Node<KeyValue<K, V>, BSNode<K, V>>): Int {
+        return data.getKey().compareTo(other.data.getKey())
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (other is BSNode<*, *>) {
+            return data.equals(other.data)
+        }
+        return false
+    }
 
     fun getKey(): K {
         return data.getKey()
@@ -18,13 +25,6 @@ class BSNode<K : Comparable<K>, V : Any>(override var data: KeyValue<K, V>) : No
 
     fun getValue(): V {
         return data.getValue()
-    }
-
-    operator fun compareTo(other: BSNode<K, V>?): Int {
-        if (other != null) {
-            return data.getKey().compareTo(other.getKey())
-        }
-        return 0
     }
 }
 
@@ -39,6 +39,13 @@ class KeyValue<K : Comparable<K>, V>(private val key: K, private var value: V) :
 
     override fun compareTo(other: KeyValue<K, V>): Int {
         return key.compareTo(other.key)
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (other is KeyValue<*, *>) {
+            return key.equals(other.getKey())
+        }
+        return false
     }
 
 }
