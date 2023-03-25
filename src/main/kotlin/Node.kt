@@ -1,13 +1,15 @@
 interface Node<T : Comparable<T>, Subtype : Node<T, Subtype>> : Comparable<Node<T, Subtype>> {
-
     var data: T
     var left: Subtype?
     var right: Subtype?
+    var parent: Subtype?
 }
 
 class BSNode<K : Comparable<K>, V>(override var data: KeyValue<K, V>) : Node<KeyValue<K, V>, BSNode<K, V>> {
     override var left: BSNode<K, V>? = null
     override var right: BSNode<K, V>? = null
+    override var parent: BSNode<K, V>? = null
+
     override fun compareTo(other: Node<KeyValue<K, V>, BSNode<K, V>>): Int {
         return data.getKey().compareTo(other.data.getKey())
     }
