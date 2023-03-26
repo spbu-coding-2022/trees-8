@@ -6,7 +6,7 @@ class BSTree<K : Comparable<K>, V> : ABSTree<KeyValue<K, V>, BSNode<K, V>>() {
     }
 
     override fun contain(data: KeyValue<K, V>): Boolean {
-        return simpleContains(BSNode(data))
+        return (simpleContains(BSNode(data)) != null)
     }
 
     fun get(key: K): V? {
@@ -38,7 +38,8 @@ class BSTree<K : Comparable<K>, V> : ABSTree<KeyValue<K, V>, BSNode<K, V>>() {
     }
 
     override fun delete(data: KeyValue<K, V>) {
-        TODO("Not yet implemented")
+        val curNode = simpleContains(BSNode(data)) ?: return
+        simpleDelete(curNode)
     }
 
 
