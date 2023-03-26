@@ -16,6 +16,7 @@ abstract class ABSTree<T : Comparable<T>, NodeType : Node<T, NodeType>> : Tree<T
 
             if (data < curNode) {
                 if (curNode.left == null) {
+                    data.parent = curNode
                     curNode.left = data
                     break
                 } else {
@@ -24,18 +25,18 @@ abstract class ABSTree<T : Comparable<T>, NodeType : Node<T, NodeType>> : Tree<T
 
             } else if (data > curNode) {
                 if (curNode.right == null) {
+                    data.parent = curNode
                     curNode.right = data
                     break
                 } else {
                     curNode = curNode.right!!
                 }
             }
-
         }
     }
-    fun simpleContains(node: NodeType): Boolean {
+    fun simpleContains(node: NodeType): NodeType? {
         if (root == null) {
-            return false
+            return null
         }
         var curNode = root!!
 
@@ -55,10 +56,126 @@ abstract class ABSTree<T : Comparable<T>, NodeType : Node<T, NodeType>> : Tree<T
                     curNode = curNode.right!!
                 }
             } else if (node == curNode) {
-                return true
+                return curNode
             }
         }
 
-        return false
+        return null
+    }
+
+    fun simpleDelete(node: NodeType) {
+
+        if (node == root) {
+            if ((node.left == null) and (node.right != null)) {
+                root = node.right
+            } else if ((node.right == null) and (node.left != null)) {
+                root = node.left
+            } else  if ((node.right == null) and (node.left == null)) {
+                root = null
+            } else {
+                val curNode = root?.right ?: error("Not reachable")
+                val newNode = getMinimal(curNode)
+                if (newNode.parent?.left == newNode) {
+                    newNode.parent?.left = null
+                } else {
+                    newNode.parent?.right = null
+                }
+                newNode.left = root?.left
+                newNode.right = root?.right
+                root = newNode
+            }
+            root?.parent = null
+            return
+        }
+        val parent = node.parent ?: error("Not reachable")
+        val isRight = (parent.right == node)
+
+        if ((node.left == null) and (node.right != null)) {
+            if (isRight) {
+                parent.right = node.right
+                node.right?.parent = parent
+            } else {
+                parent.left = node.right
+                node.right?.parent = parent
+            }
+
+        } else if ((node.right == null) and (node.left != null)) {
+            if (isRight) {
+                parent.right = node.left
+                node.left?.parent = parent
+            } else {
+                parent.left = node.left
+                node.left?.parent = parent
+            }
+
+        } else  if ((node.right == null) and (node.left == null)) {
+            if (isRight) {
+                parent.right = null
+            } else {
+                parent.left = null
+            }
+        } else {
+            val newNode = node.right?.let { getMinimal(it) }
+            if (newNode?.parent?.left == newNode) {
+                newNode?.parent?.left = null
+            } else {
+                newNode?.parent?.right = null
+            }
+            if (isRight) {
+                parent.right = newNode
+            } else {
+                parent.left = newNode
+            }
+            newNode?.parent = parent
+        }
+
+    }
+
+    fun getMinimal(node: NodeType): NodeType {
+        var minNode = node
+
+        while (true) {
+            if ((minNode.left != null)) {
+                break
+            } else if (minNode.right != null) {
+                minNode = minNode.right ?: error("Mot reachable")
+            } else {
+                return minNode
+            }
+        }
+
+        while (true) {
+            if (minNode.left == null) {
+                break
+            } else {
+                minNode = minNode.left ?: error("Not reachable")
+            }
+        }
+
+        return minNode
+    }
+
+    fun getMaximal(node: NodeType): NodeType {
+        var maxNode = node
+
+        while (true) {
+            if ((maxNode.right != null)) {
+                break
+            } else if (maxNode.left != null) {
+                maxNode = maxNode.left ?: error("Mot reachable")
+            } else {
+                return maxNode
+            }
+        }
+
+        while (true) {
+            if (maxNode.right == null) {
+                break
+            } else {
+                maxNode = maxNode.right ?: error("Not reachable")
+            }
+        }
+
+        return maxNode
     }
 }
