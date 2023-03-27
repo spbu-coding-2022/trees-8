@@ -45,3 +45,7 @@ bin/
 /.idea/misc.xml
 /.idea/vcs.xml
 /.idea/
+
+# Ignore Gradle build output directory
+build
+/app/build
