@@ -30,17 +30,17 @@ class BSNode<K : Comparable<K>, V>(override var data: KeyValue<K, V>) : Node<Key
         return data.getKey()
     }
 
-    fun getValue(): V {
+    fun getValue(): V? {
         return data.getValue()
     }
 }
 
-class KeyValue<K : Comparable<K>, V>(private val key: K, private var value: V) : Comparable<KeyValue<K, V>> {
+class KeyValue<K : Comparable<K>, V>(private val key: K, private var value: V?) : Comparable<KeyValue<K, V>> {
     fun getKey(): K {
         return key
     }
 
-    fun getValue(): V {
+    fun getValue(): V? {
         return value
     }
 

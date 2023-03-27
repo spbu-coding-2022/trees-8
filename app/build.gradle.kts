@@ -32,10 +32,10 @@ dependencies {
 
 application {
     // Define the main class for the application.
-    mainClass.set("trees.AppKt")
+    mainClass.set("MainKt")
 }
 
-tasks.named<Test>("test") {
-    // Use JUnit Platform for unit tests.
-    useJUnitPlatform()
-}
+//tasks.named<Test>("test") {
+//    // Use JUnit Platform for unit tests.
+//    useJUnitPlatform()
+//}
