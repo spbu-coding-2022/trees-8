@@ -1,3 +1,8 @@
+/*
+ * Copyright  2023 teemEight
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 class BSTree<K : Comparable<K>, V> : ABSTree<KeyValue<K, V>, BSNode<K, V>>() {
 
 

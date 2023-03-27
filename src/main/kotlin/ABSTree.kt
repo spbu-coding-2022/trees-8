@@ -1,6 +1,11 @@
+/*
+ * Copyright  2023 teemEight
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 interface Tree<T : Comparable<T>> {
     fun add(data: T)
-    fun contain(data: T) : Boolean
+    fun contain(data: T): Boolean
     fun delete(data: T)
 }
 
@@ -34,6 +39,7 @@ abstract class ABSTree<T : Comparable<T>, NodeType : Node<T, NodeType>> : Tree<T
             }
         }
     }
+
     fun simpleContains(node: NodeType): NodeType? {
         if (root == null) {
             return null
@@ -70,7 +76,7 @@ abstract class ABSTree<T : Comparable<T>, NodeType : Node<T, NodeType>> : Tree<T
                 root = node.right
             } else if ((node.right == null) and (node.left != null)) {
                 root = node.left
-            } else  if ((node.right == null) and (node.left == null)) {
+            } else if ((node.right == null) and (node.left == null)) {
                 root = null
             } else {
                 val curNode = root?.right ?: error("Not reachable")
@@ -108,7 +114,7 @@ abstract class ABSTree<T : Comparable<T>, NodeType : Node<T, NodeType>> : Tree<T
                 node.left?.parent = parent
             }
 
-        } else  if ((node.right == null) and (node.left == null)) {
+        } else if ((node.right == null) and (node.left == null)) {
             if (isRight) {
                 parent.right = null
             } else {
