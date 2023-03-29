@@ -1,11 +1,14 @@
-import trees.ABSTree
+package trees
+
+import BSNode
+import KeyValue
 
 /*
  * Copyright 2023 teemEight
  * SPDX-License-Identifier: Apache-2.0
  */
 
-class BSTree<K : Comparable<K>, V> : ABSTree<KeyValue<K, V>, BSNode<K, V>>() {
+class BSTree<K : Comparable<K>, V, T : KeyValue<K, V>> : ABSTree<KeyValue<K, V>, BSNode<K, V>>() {
 
 
     override fun add(data: KeyValue<K, V>) {
