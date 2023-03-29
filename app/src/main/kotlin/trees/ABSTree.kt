@@ -75,4 +75,20 @@ abstract class ABSTree<T : Comparable<T>, NodeType : Node<T, NodeType>> : Tree<T
         }
         return maxNode
     }
+
+    fun rotateLeft(node: NodeType): NodeType? {
+        val rightChild = node.right
+        val secondSubtree = rightChild?.left
+        rightChild?.left = node
+        node.right = secondSubtree
+        return rightChild
+    }
+
+    fun rotateRight(node: NodeType): NodeType? {
+        val leftChild = node.left
+        val secondSubtree = leftChild?.right
+        leftChild?.right = node
+        node.left = secondSubtree
+        return leftChild
+    }
 }
