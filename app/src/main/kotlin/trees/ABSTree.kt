@@ -139,49 +139,17 @@ abstract class ABSTree<T : Comparable<T>, NodeType : Node<T, NodeType>> : Tree<T
 
     fun getMinimal(node: NodeType): NodeType {
         var minNode = node
-
         while (true) {
-            if ((minNode.left != null)) {
-                break
-            } else if (minNode.right != null) {
-                minNode = minNode.right ?: error("Mot reachable")
-            } else {
-                return minNode
-            }
+            minNode = minNode.left ?: break
         }
-
-        while (true) {
-            if (minNode.left == null) {
-                break
-            } else {
-                minNode = minNode.left ?: error("Not reachable")
-            }
-        }
-
         return minNode
     }
 
     fun getMaximal(node: NodeType): NodeType {
         var maxNode = node
-
         while (true) {
-            if ((maxNode.right != null)) {
-                break
-            } else if (maxNode.left != null) {
-                maxNode = maxNode.left ?: error("Mot reachable")
-            } else {
-                return maxNode
-            }
+            maxNode = maxNode.left ?: break
         }
-
-        while (true) {
-            if (maxNode.right == null) {
-                break
-            } else {
-                maxNode = maxNode.right ?: error("Not reachable")
-            }
-        }
-
         return maxNode
     }
 }
