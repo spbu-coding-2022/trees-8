@@ -1,3 +1,7 @@
+package trees
+
+import Node
+
 /*
  * Copyright 2023 teemEight
  * SPDX-License-Identifier: Apache-2.0
@@ -52,9 +56,11 @@ abstract class ABSTree<T : Comparable<T>, NodeType : Node<T, NodeType>> : Tree<T
             if ((initNode.left == null) or (initNode.right == null)) {
                 return initNode.left ?: initNode.right
             } else {
-                val tmp = getMinimal(initNode.right ?: error("Not reachable"))
-                initNode.data = tmp.data
-                initNode.right = simpleDelete(initNode.right, tmp)
+                initNode.right?.let {
+                    val tmp = getMinimal(it)
+                    initNode.data = tmp.data
+                    initNode.right = simpleDelete(initNode.right, tmp)
+                }
             }
         }
         return initNode
