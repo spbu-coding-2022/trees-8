@@ -55,4 +55,7 @@ class KeyValue<K : Comparable<K>, V>(private val key: K, private var value: V?) 
         return false
     }
 
+    override fun toString(): String {
+        return "$key: $value"
+    }
 }
