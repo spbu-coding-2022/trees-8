@@ -11,130 +11,53 @@ interface Tree<T : Comparable<T>> {
 
 abstract class ABSTree<T : Comparable<T>, NodeType : Node<T, NodeType>> : Tree<T> {
     protected var root: NodeType? = null
-    fun simpleAdd(data: NodeType) {
-        if (root == null) {
-            root = data
-            return
-        }
-        var curNode = root!!
-        while (true) {
 
-            if (data < curNode) {
-                if (curNode.left == null) {
-                    data.parent = curNode
-                    curNode.left = data
-                    break
-                } else {
-                    curNode = curNode.left!!
-                }
+    fun simpleAdd(initNode: NodeType?, node: NodeType): NodeType {
 
-            } else if (data > curNode) {
-                if (curNode.right == null) {
-                    data.parent = curNode
-                    curNode.right = data
-                    break
-                } else {
-                    curNode = curNode.right!!
-                }
-            }
+        if (initNode == null) {
+            return node
         }
+
+        if (initNode < node) {
+            initNode.right = simpleAdd(initNode.right, node)
+        } else {
+            initNode.left = simpleAdd(initNode.left, node)
+        }
+        return initNode
     }
 
-    fun simpleContains(node: NodeType): NodeType? {
-        if (root == null) {
+    fun simpleContains(initNode: NodeType?, node: NodeType): NodeType? {
+        if (initNode == null) {
             return null
         }
-        var curNode = root!!
 
-        while (true) {
-
-            if (node < curNode) {
-                if (curNode.left == null) {
-                    break
-                } else {
-                    curNode = curNode.left!!
-                }
-
-            } else if (node > curNode) {
-                if (curNode.right == null) {
-                    break
-                } else {
-                    curNode = curNode.right!!
-                }
-            } else if (node == curNode) {
-                return curNode
-            }
+        return if (initNode < node) {
+            simpleContains(initNode.right, node)
+        } else if (initNode > node) {
+            simpleContains(initNode.left, node)
+        } else {
+            initNode
         }
-
-        return null
     }
 
-    fun simpleDelete(node: NodeType) {
-
-        if (node == root) {
-            if ((node.left == null) and (node.right != null)) {
-                root = node.right
-            } else if ((node.right == null) and (node.left != null)) {
-                root = node.left
-            } else if ((node.right == null) and (node.left == null)) {
-                root = null
-            } else {
-                val curNode = root?.right ?: error("Not reachable")
-                val newNode = getMinimal(curNode)
-                if (newNode.parent?.left == newNode) {
-                    newNode.parent?.left = null
-                } else {
-                    newNode.parent?.right = null
-                }
-                newNode.left = root?.left
-                newNode.right = root?.right
-                root = newNode
-            }
-            root?.parent = null
-            return
+    fun simpleDelete(initNode: NodeType?, node: NodeType): NodeType? {
+        if (initNode == null) {
+            return null
         }
-        val parent = node.parent ?: error("Not reachable")
-        val isRight = (parent.right == node)
-
-        if ((node.left == null) and (node.right != null)) {
-            if (isRight) {
-                parent.right = node.right
-                node.right?.parent = parent
-            } else {
-                parent.left = node.right
-                node.right?.parent = parent
-            }
-
-        } else if ((node.right == null) and (node.left != null)) {
-            if (isRight) {
-                parent.right = node.left
-                node.left?.parent = parent
-            } else {
-                parent.left = node.left
-                node.left?.parent = parent
-            }
-
-        } else if ((node.right == null) and (node.left == null)) {
-            if (isRight) {
-                parent.right = null
-            } else {
-                parent.left = null
-            }
+        if (initNode < node) {
+            initNode.right = simpleDelete(initNode.right, node)
+        } else if (initNode > node) {
+            initNode.left = simpleDelete(initNode.left, node)
         } else {
-            val newNode = node.right?.let { getMinimal(it) }
-            if (newNode?.parent?.left == newNode) {
-                newNode?.parent?.left = null
+            if ((initNode.left == null) or (initNode.right == null)) {
+                return initNode.left ?: initNode.right
             } else {
-                newNode?.parent?.right = null
+                val tmp = getMinimal(initNode.right ?: error("Not reachable"))
+                initNode.data = tmp.data
+                initNode.right = simpleDelete(initNode.right, tmp)
             }
-            if (isRight) {
-                parent.right = newNode
-            } else {
-                parent.left = newNode
-            }
-            newNode?.parent = parent
         }
-
+        return initNode
     }
 
     fun getMinimal(node: NodeType): NodeType {
