@@ -1,14 +1,17 @@
-package trees
-
 /*
- * Copyright 2023 teemEight
+ * Copyright (c) 2023 teemEight
  * SPDX-License-Identifier: Apache-2.0
  */
+
+package trees.trees
+
+import trees.ABSTree
+import trees.nodes.BSNode
 
 class BSTree<T : Comparable<T>> : ABSTree<T, BSNode<T>>() {
 
 
-    override fun add(data:T) {
+    override fun add(data: T) {
         root = simpleAdd(root, BSNode(data))
     }
 

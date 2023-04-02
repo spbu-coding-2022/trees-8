@@ -1,12 +1,12 @@
-package trees
-
-import Node
-
 /*
- * Copyright 2023 teemEight
+ * Copyright (c) 2023 teemEight
  * SPDX-License-Identifier: Apache-2.0
  */
 
+package trees
+
+import trees.interfaces.Node
+import trees.interfaces.Tree
 
 abstract class ABSTree<T : Comparable<T>, NodeType : Node<T, NodeType>> : Tree<T> {
     protected var root: NodeType? = null

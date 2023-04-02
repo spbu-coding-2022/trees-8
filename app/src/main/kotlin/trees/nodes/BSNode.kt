@@ -1,8 +1,13 @@
-package trees
+/*
+ * Copyright (c) 2023 teemEight
+ * SPDX-License-Identifier: Apache-2.0
+ */
 
-import Node
+package trees.nodes
 
-class BSNode<T: Comparable<T>>(override var data: T) : Node<T, BSNode<T>> {
+import trees.interfaces.Node
+
+class BSNode<T : Comparable<T>>(override var data: T) : Node<T, BSNode<T>> {
     override var left: BSNode<T>? = null
     override var right: BSNode<T>? = null
     override var parent: BSNode<T>? = null
