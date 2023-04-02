@@ -7,14 +7,13 @@ import Node
  * SPDX-License-Identifier: Apache-2.0
  */
 
-interface Tree<T : Comparable<T>> {
-    fun add(data: T)
-    fun contain(data: T): Boolean
-    fun delete(data: T)
-}
 
 abstract class ABSTree<T : Comparable<T>, NodeType : Node<T, NodeType>> : Tree<T> {
     protected var root: NodeType? = null
+
+    fun rebalance(initNode: NodeType): NodeType {
+        return initNode
+    }
 
     fun simpleAdd(initNode: NodeType?, node: NodeType): NodeType {
 
@@ -24,10 +23,37 @@ abstract class ABSTree<T : Comparable<T>, NodeType : Node<T, NodeType>> : Tree<T
 
         if (initNode < node) {
             initNode.right = simpleAdd(initNode.right, node)
+            initNode.right?.parent = initNode
         } else {
             initNode.left = simpleAdd(initNode.left, node)
+            initNode.left?.parent = initNode
         }
-        return initNode
+        return rebalance(initNode)
+    }
+
+    fun simpleDelete(initNode: NodeType?, node: NodeType): NodeType? {
+        if (initNode == null) {
+            return null
+        }
+        if (initNode < node) {
+            initNode.right = simpleDelete(initNode.right, node)
+            initNode.right?.parent = initNode
+        } else if (initNode > node) {
+            initNode.left = simpleDelete(initNode.left, node)
+            initNode.left?.parent = initNode
+        } else {
+            if ((initNode.left == null) or (initNode.right == null)) {
+                return initNode.left ?: initNode.right
+            } else {
+                initNode.right?.let {
+                    val tmp = getMinimal(it)
+                    initNode.data = tmp.data
+                    initNode.right = simpleDelete(initNode.right, tmp)
+                    initNode.right?.parent = initNode
+                }
+            }
+        }
+        return rebalance(initNode)
     }
 
     fun simpleContains(initNode: NodeType?, node: NodeType): NodeType? {
@@ -42,28 +68,6 @@ abstract class ABSTree<T : Comparable<T>, NodeType : Node<T, NodeType>> : Tree<T
         } else {
             initNode
         }
-    }
-
-    fun simpleDelete(initNode: NodeType?, node: NodeType): NodeType? {
-        if (initNode == null) {
-            return null
-        }
-        if (initNode < node) {
-            initNode.right = simpleDelete(initNode.right, node)
-        } else if (initNode > node) {
-            initNode.left = simpleDelete(initNode.left, node)
-        } else {
-            if ((initNode.left == null) or (initNode.right == null)) {
-                return initNode.left ?: initNode.right
-            } else {
-                initNode.right?.let {
-                    val tmp = getMinimal(it)
-                    initNode.data = tmp.data
-                    initNode.right = simpleDelete(initNode.right, tmp)
-                }
-            }
-        }
-        return initNode
     }
 
     fun getMinimal(node: NodeType): NodeType {
@@ -86,7 +90,9 @@ abstract class ABSTree<T : Comparable<T>, NodeType : Node<T, NodeType>> : Tree<T
         val rightChild = node.right
         val secondSubtree = rightChild?.left
         rightChild?.left = node
+        rightChild?.left?.parent = rightChild
         node.right = secondSubtree
+        node.right?.parent = node
         return rightChild
     }
 
@@ -94,7 +100,9 @@ abstract class ABSTree<T : Comparable<T>, NodeType : Node<T, NodeType>> : Tree<T
         val leftChild = node.left
         val secondSubtree = leftChild?.right
         leftChild?.right = node
+        leftChild?.right?.parent = leftChild
         node.left = secondSubtree
+        node.left?.parent = node
         return leftChild
     }
 }
