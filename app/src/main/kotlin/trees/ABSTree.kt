@@ -11,14 +11,14 @@ import trees.interfaces.Tree
 abstract class ABSTree<T : Comparable<T>, NodeType : Node<T, NodeType>> : Tree<T> {
     protected var root: NodeType? = null
 
-    open fun balance(initNode: NodeType?, type: Boolean=true): NodeType? {
+    open fun balance(initNode: NodeType?, type: Boolean = true): NodeType? {
         return initNode
     }
 
     fun simpleAdd(initNode: NodeType?, node: NodeType): NodeType? {
 
         if (initNode == null) {
-            return balance(node)
+            return node
         }
 
         if (initNode < node) {
