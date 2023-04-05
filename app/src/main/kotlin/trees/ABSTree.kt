@@ -11,7 +11,7 @@ import trees.interfaces.Tree
 abstract class ABSTree<T : Comparable<T>, NodeType : Node<T, NodeType>> : Tree<T> {
     protected var root: NodeType? = null
 
-    open fun balance(initNode: NodeType?): NodeType? {
+    open fun balance(initNode: NodeType?, type: Boolean=true): NodeType? {
         return initNode
     }
 
@@ -28,7 +28,7 @@ abstract class ABSTree<T : Comparable<T>, NodeType : Node<T, NodeType>> : Tree<T
             initNode.left = simpleAdd(initNode.left, node)
             initNode.left?.parent = initNode
         }
-        return balance(initNode)
+        return balance(initNode, true)
     }
 
     fun simpleDelete(initNode: NodeType?, node: NodeType): NodeType? {
@@ -53,7 +53,7 @@ abstract class ABSTree<T : Comparable<T>, NodeType : Node<T, NodeType>> : Tree<T
                 }
             }
         }
-        return balance(initNode)
+        return balance(initNode, false)
     }
 
     fun simpleContains(initNode: NodeType?, node: NodeType): NodeType? {
