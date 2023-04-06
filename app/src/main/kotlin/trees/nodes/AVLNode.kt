@@ -6,8 +6,9 @@
 package trees.nodes
 
 import trees.interfaces.Node
+
 class AVLNode<T : Comparable<T>>(override var data: T) : Node<T, AVLNode<T>> {
-    var height: Int? = null
+    var height: Int = 1
     override var left: AVLNode<T>? = null
     override var right: AVLNode<T>? = null
     override var parent: AVLNode<T>? = null
@@ -16,8 +17,8 @@ class AVLNode<T : Comparable<T>>(override var data: T) : Node<T, AVLNode<T>> {
     fun updateHeight() {
         val leftNode = left
         val rightNode = right
-        val leftHeight = if (leftNode != null) leftNode.height ?: 0 else 0
-        val rightHeight = if (rightNode != null) rightNode.height ?: 0 else 0
+        val leftHeight = leftNode?.height ?: 0
+        val rightHeight = rightNode?.height ?: 0
         height = 1 + maxOf(leftHeight, rightHeight)
     }
 
@@ -36,5 +37,9 @@ class AVLNode<T : Comparable<T>>(override var data: T) : Node<T, AVLNode<T>> {
             return data.equals(other.data)
         }
         return false
+    }
+
+    override fun toString(): String {
+        return "$data"
     }
 }

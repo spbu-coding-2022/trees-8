@@ -28,4 +28,8 @@ class RBNode<T : Comparable<T>>(override var data: T) : Node<T, RBNode<T>> {
         }
         return false
     }
+
+    override fun toString(): String {
+        return "$color - $data"
+    }
 }

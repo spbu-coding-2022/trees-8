@@ -22,4 +22,8 @@ class BSNode<T : Comparable<T>>(override var data: T) : Node<T, BSNode<T>> {
         }
         return false
     }
+
+    override fun toString(): String {
+        return "$data"
+    }
 }
