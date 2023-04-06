@@ -11,8 +11,10 @@ import trees.nodes.RBNode
 
 class RBTree<T : Comparable<T>> : ABSTree<T, RBNode<T>>() {
     override fun add(data: T) {
-        root = simpleAdd(root, RBNode(data))
-
+        val node = RBNode(data)
+        root = balanceAdd(node, simpleAdd(root, node))
+        root?.parent = null
+        root?.color = Color.BLACK
     }
 
     override fun contain(data: T): Boolean {
@@ -27,55 +29,48 @@ class RBTree<T : Comparable<T>> : ABSTree<T, RBNode<T>>() {
         root = simpleDelete(root, RBNode(data))
     }
 
-    override fun balance(initNode: RBNode<T>?, type: Boolean): RBNode<T>? {
-        return if (type) balanceAdd(initNode) else balanceDelete(initNode)
-    }
-
-    fun balanceAdd(initNode: RBNode<T>?): RBNode<T>? {
+    fun balanceAdd(initNode: RBNode<T>?, subRoot: RBNode<T>?): RBNode<T>? {
+        if (initNode?.parent == null) return subRoot
+        var newRoot = subRoot
         var current = initNode
-        if (current == root) {
-            current?.color = Color.BLACK
-            return initNode
-        }
-        while (current != root && current?.parent?.color == Color.RED) {
-            val parent = current.parent
-            val brother = parent?.right
-            val sister = parent?.left
-            val grandpa = parent?.parent
-            if (parent == grandpa?.left) {
-                if (grandpa?.right?.color == Color.RED) {
-                    parent.color = Color.BLACK
-                    grandpa.right?.color = Color.BLACK
-                    grandpa.color = Color.RED
-                    current = grandpa
+        while (current?.parent?.color == Color.RED) {
+            val grandpa = current.parent?.parent
+            if (current.parent == current.parent?.parent?.left) {
+                if (current.parent?.parent?.right?.color == Color.RED) {
+                    current.parent?.color = Color.BLACK
+                    current.parent?.parent?.right?.color = Color.BLACK
+                    current.parent?.parent?.color = Color.RED
+                    current = current.parent?.parent
                 } else {
-                    if (current == brother) {
-                        current = parent
-                        rotateLeft(current)
-                        parent.color = Color.BLACK
-                        grandpa?.color = Color.RED
-                        grandpa?.let { rotateRight(it) }
+                    if (current == current.parent?.right) {
+                        current = current.parent
+                        newRoot = current?.let { clearRotateLeft(it, newRoot) }
                     }
+                    current?.parent?.color = Color.BLACK
+                    current?.parent?.parent?.color = Color.RED
+                    newRoot = current?.parent?.parent?.let { clearRotateRight(it, newRoot) }
+
                 }
             } else {
-                if (grandpa?.left?.color == Color.RED) {
-                    parent.color = Color.BLACK
-                    grandpa.left?.color = Color.BLACK
-                    grandpa.color = Color.RED
-                    current = grandpa
+                if (current.parent?.parent?.left?.color == Color.RED) {
+                    current.parent?.color = Color.BLACK
+                    current.parent?.parent?.left?.color = Color.BLACK
+                    current.parent?.parent?.color = Color.RED
+                    current = current.parent?.parent
                 } else {
-                    if (current == sister) {
-                        current = parent
-                        rotateRight(current)
-                        parent.color = Color.BLACK
-                        grandpa?.color = Color.RED
-                        grandpa?.let { rotateLeft(it) }
+                    if (current == current.parent?.left) {
+                        current = current.parent
+                        newRoot = current?.let { clearRotateRight(it, newRoot) }
                     }
+                    current?.parent?.color = Color.BLACK
+                    current?.parent?.parent?.color = Color.RED
+                    newRoot = current?.parent?.parent?.let { clearRotateLeft(it, newRoot) }
+
                 }
             }
         }
-        root?.color = Color.BLACK
-        return initNode
+        newRoot?.color = Color.BLACK
+        return newRoot ?: root
     }
 
     fun balanceDelete(initNode: RBNode<T>?): RBNode<T>? {
@@ -131,4 +126,39 @@ class RBTree<T : Comparable<T>> : ABSTree<T, RBNode<T>>() {
         return balance(initNode)
     }
 
+    fun clearRotateLeft(node: RBNode<T>?, root: RBNode<T>?): RBNode<T>? {
+        if (node?.right == null) return null
+
+        var newRoot = root
+        val parent = node.parent
+        val subTree = rotateLeft(node)
+
+        if (parent == null) {
+            newRoot = subTree
+        } else if (parent.left == node) {
+            parent.left = subTree
+        } else {
+            parent.right = subTree
+        }
+
+        return newRoot
+    }
+
+    fun clearRotateRight(node: RBNode<T>?, root: RBNode<T>?): RBNode<T>? {
+        if (node?.left == null) return null
+
+        var newRoot = root
+        val parent = node.parent
+        val subTree = rotateRight(node)
+
+        if (parent == null) {
+            newRoot = subTree
+        } else if (parent.left == node) {
+            parent.left = subTree
+        } else {
+            parent.right = subTree
+        }
+
+        return newRoot
+    }
 }
