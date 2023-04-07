@@ -26,7 +26,7 @@ class AVLTree<T : Comparable<T>> : ABSTree<T, AVLNode<T>>() {
         root?.parent = null
     }
 
-    override fun balance(initNode: AVLNode<T>?, type: Boolean): AVLNode<T>? {
+    override fun balance(initNode: AVLNode<T>?): AVLNode<T>? {
         if (initNode == null) {
             return null
         }
