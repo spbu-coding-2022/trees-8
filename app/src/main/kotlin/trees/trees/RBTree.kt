@@ -12,7 +12,8 @@ import trees.nodes.RBNode
 class RBTree<T : Comparable<T>> : ABSTree<T, RBNode<T>>() {
     override fun add(data: T) {
         val node = RBNode(data)
-        root = balanceAdd(node, simpleAdd(root, node))
+        root = simpleAdd(root, node)
+        root = balanceAdd(node, root)
         root?.parent = null
         root?.color = Color.BLACK
     }
