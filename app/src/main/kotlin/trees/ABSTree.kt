@@ -42,7 +42,7 @@ abstract class ABSTree<T : Comparable<T>, NodeType : Node<T, NodeType>> : Tree<T
             initNode.left = simpleDelete(initNode.left, node)
             initNode.left?.parent = initNode
         } else {
-            if ((initNode.left == null) or (initNode.right == null)) {
+            if ((initNode.left == null) || (initNode.right == null)) {
                 return initNode.left ?: initNode.right
             } else {
                 initNode.right?.let {
@@ -106,4 +106,13 @@ abstract class ABSTree<T : Comparable<T>, NodeType : Node<T, NodeType>> : Tree<T
         return leftChild
     }
 
+    fun replaceChild(child: NodeType, newChild: NodeType?): NodeType? {
+        if (child.parent?.left == child) {
+            child.parent?.left = newChild
+        } else if (child.parent?.right == child) {
+            child.parent?.right = newChild
+        }
+        newChild?.parent = child.parent
+        return newChild
+    }
 }
