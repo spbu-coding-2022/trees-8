@@ -19,7 +19,6 @@ class RBTree<T : Comparable<T>> : ABSTree<T, RBNode<T>>() {
     }
 
     override fun delete(data: T) {
-        if (!contain(data)) return
 
         val node = simpleContains(root, RBNode(data)) ?: return
         val next: RBNode<T>
@@ -34,6 +33,7 @@ class RBTree<T : Comparable<T>> : ABSTree<T, RBNode<T>>() {
                 } else {
                     // delete black node without children
                     root = balanceDelete(node)
+                    replaceChild(node, null)
                 }
             }
             return
@@ -52,6 +52,7 @@ class RBTree<T : Comparable<T>> : ABSTree<T, RBNode<T>>() {
             } else {
                 if (next.right == null) {
                     root = balanceDelete(next)
+                    replaceChild(next, null)
                 } else {
                     // delete for black node with one child
                     replaceChild(next, next.right)?.color = Color.BLACK // next.right must be red and not null
@@ -71,19 +72,19 @@ class RBTree<T : Comparable<T>> : ABSTree<T, RBNode<T>>() {
         while ((current != newRoot) && (current?.color == Color.BLACK)) {
             if (current == current.parent?.left) {
                 var brother = current.parent?.right
-                if (brother?.color == Color.RED) {
-                    brother.color = Color.BLACK
+                if (isRed(brother)) {
+                    brother?.color = Color.BLACK
                     current.parent?.color = Color.RED
                     newRoot = clearRotateLeft(current.parent, newRoot)
                     brother = current.parent?.right
                 }
-                if ((brother?.left?.color == Color.BLACK) && (brother.right?.color == Color.BLACK)) {
-                    brother.color = Color.RED
+                if (isBlack(brother?.left) && (isBlack(brother?.right))) {
+                    brother?.color = Color.RED
                     current = current.parent
                 } else {
-                    if (brother?.right?.color == Color.BLACK) {
-                        brother.left?.color = Color.BLACK
-                        brother.color = Color.RED
+                    if (isBlack(brother?.right)) {
+                        brother?.left?.color = Color.BLACK
+                        brother?.color = Color.RED
                         newRoot = clearRotateRight(brother, newRoot)
                         brother = current.parent?.right
                     }
@@ -95,19 +96,19 @@ class RBTree<T : Comparable<T>> : ABSTree<T, RBNode<T>>() {
                 }
             } else {
                 var brother = current.parent?.left
-                if (brother?.color == Color.RED) {
-                    brother.color = Color.BLACK
+                if (isRed(brother)) {
+                    brother?.color = Color.BLACK
                     current.parent?.color = Color.RED
                     newRoot = clearRotateRight(current.parent, newRoot)
                     brother = current.parent?.left
                 }
-                if (brother?.right?.color == Color.BLACK && brother.left?.color == Color.BLACK) {
-                    brother.color = Color.RED
+                if ((isBlack(brother?.right)) && (isBlack(brother?.left))) {
+                    brother?.color = Color.RED
                     current = current.parent
                 } else {
-                    if (brother?.left?.color == Color.BLACK) {
-                        brother.right?.color = Color.BLACK
-                        brother.color = Color.RED
+                    if (isBlack(brother?.left)) {
+                        brother?.right?.color = Color.BLACK
+                        brother?.color = Color.RED
                         newRoot = clearRotateLeft(brother, newRoot)
                         brother = current.parent?.left
                     }
@@ -170,19 +171,22 @@ class RBTree<T : Comparable<T>> : ABSTree<T, RBNode<T>>() {
         return simpleContains(root, RBNode(data))?.data
     }
 
-    fun clearRotateLeft(node: RBNode<T>?, root: RBNode<T>?): RBNode<T>? {
+    fun clearRotateLeft(node: RBNode<T>?, initRoot: RBNode<T>?): RBNode<T>? {
         if (node?.right == null) return null
 
-        var newRoot = root
+        var newRoot = initRoot
         val parent = node.parent
         val subTree = rotateLeft(node)
 
         if (parent == null) {
+            subTree?.parent = null
             newRoot = subTree
         } else if (parent.left == node) {
             parent.left = subTree
+            subTree?.parent = parent
         } else {
             parent.right = subTree
+            subTree?.parent = parent
         }
 
         return newRoot
@@ -202,7 +206,15 @@ class RBTree<T : Comparable<T>> : ABSTree<T, RBNode<T>>() {
         } else {
             parent.right = subTree
         }
-
+        subTree?.parent = parent
         return newRoot
+    }
+
+    fun isBlack(node: RBNode<T>?): Boolean {
+        return ((node == null) || (node.color == Color.BLACK))
+    }
+
+    fun isRed(node: RBNode<T>?): Boolean {
+        return node?.color == Color.RED
     }
 }
