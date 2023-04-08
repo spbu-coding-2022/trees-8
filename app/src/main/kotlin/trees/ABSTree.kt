@@ -107,6 +107,11 @@ abstract class ABSTree<T : Comparable<T>, NodeType : Node<T, NodeType>> : Tree<T
     }
 
     fun replaceChild(child: NodeType, newChild: NodeType?): NodeType? {
+        if (child == root) {
+            root = newChild
+            newChild?.parent = null
+            return newChild
+        }
         if (child.parent?.left == child) {
             child.parent?.left = newChild
         } else if (child.parent?.right == child) {
