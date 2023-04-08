@@ -13,6 +13,7 @@ class AVLTree<T : Comparable<T>> : ABSTree<T, AVLNode<T>>() {
     override fun add(data: T) {
         root = simpleAdd(root, AVLNode(data))
         root?.updateHeight()
+        root?.parent = null
     }
 
     override fun contain(data: T): Boolean {
@@ -20,7 +21,9 @@ class AVLTree<T : Comparable<T>> : ABSTree<T, AVLNode<T>>() {
     }
 
     override fun delete(data: T) {
-        root = simpleDelete(root, AVLNode(data)) //        simpleDelete(curNode, root)
+        root = simpleDelete(root, AVLNode(data))
+        root?.updateHeight()
+        root?.parent = null
     }
 
     override fun balance(initNode: AVLNode<T>?): AVLNode<T>? {
