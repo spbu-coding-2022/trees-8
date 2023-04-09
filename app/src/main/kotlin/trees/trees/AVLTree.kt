@@ -59,11 +59,7 @@ class AVLTree<T : Comparable<T>> : ABSTree<T, AVLNode<T>>() {
         return simpleContains(root, AVLNode(data))?.data
     }
 
-    fun min(): T? {
-        return root?.let { getMinimal(it).data }
-    }
-
-    fun updateChildrenHeight(node: AVLNode<T>?) {
+    private fun updateChildrenHeight(node: AVLNode<T>?) {
         node?.left?.updateHeight()
         node?.right?.updateHeight()
     }

@@ -5,17 +5,18 @@
 
 package trees
 
-import trees.interfaces.Node
+import MyNode
 import trees.interfaces.Tree
 
-abstract class ABSTree<T : Comparable<T>, NodeType : Node<T, NodeType>> : Tree<T> {
-    protected var root: NodeType? = null
+abstract class ABSTree<T : Comparable<T>, NodeType : MyNode<T, NodeType>> : Tree<T> {
+    var root: NodeType? = null
+        internal set
 
-    open fun balance(initNode: NodeType?): NodeType? {
+    protected open fun balance(initNode: NodeType?): NodeType? {
         return initNode
     }
 
-    fun simpleAdd(initNode: NodeType?, node: NodeType): NodeType? {
+    protected fun simpleAdd(initNode: NodeType?, node: NodeType): NodeType? {
 
         if (initNode == null) {
             return node
@@ -31,7 +32,7 @@ abstract class ABSTree<T : Comparable<T>, NodeType : Node<T, NodeType>> : Tree<T
         return balance(initNode)
     }
 
-    fun simpleDelete(initNode: NodeType?, node: NodeType): NodeType? {
+    protected fun simpleDelete(initNode: NodeType?, node: NodeType): NodeType? {
         if (initNode == null) {
             return null
         }
@@ -56,7 +57,7 @@ abstract class ABSTree<T : Comparable<T>, NodeType : Node<T, NodeType>> : Tree<T
         return balance(initNode)
     }
 
-    fun simpleContains(initNode: NodeType?, node: NodeType): NodeType? {
+    protected fun simpleContains(initNode: NodeType?, node: NodeType): NodeType? {
         if (initNode == null) {
             return null
         }
@@ -70,7 +71,7 @@ abstract class ABSTree<T : Comparable<T>, NodeType : Node<T, NodeType>> : Tree<T
         }
     }
 
-    fun getMinimal(node: NodeType): NodeType {
+    protected fun getMinimal(node: NodeType): NodeType {
         var minNode = node
         while (true) {
             minNode = minNode.left ?: break
@@ -78,7 +79,7 @@ abstract class ABSTree<T : Comparable<T>, NodeType : Node<T, NodeType>> : Tree<T
         return minNode
     }
 
-    fun getMaximal(node: NodeType): NodeType {
+    protected fun getMaximal(node: NodeType): NodeType {
         var maxNode = node
         while (true) {
             maxNode = maxNode.left ?: break
@@ -86,7 +87,7 @@ abstract class ABSTree<T : Comparable<T>, NodeType : Node<T, NodeType>> : Tree<T
         return maxNode
     }
 
-    fun rotateLeft(node: NodeType): NodeType? {
+    protected fun rotateLeft(node: NodeType): NodeType? {
         val rightChild = node.right
         val secondSubtree = rightChild?.left
         rightChild?.left = node
@@ -96,7 +97,7 @@ abstract class ABSTree<T : Comparable<T>, NodeType : Node<T, NodeType>> : Tree<T
         return rightChild
     }
 
-    fun rotateRight(node: NodeType): NodeType? {
+    protected fun rotateRight(node: NodeType): NodeType? {
         val leftChild = node.left
         val secondSubtree = leftChild?.right
         leftChild?.right = node
@@ -106,7 +107,7 @@ abstract class ABSTree<T : Comparable<T>, NodeType : Node<T, NodeType>> : Tree<T
         return leftChild
     }
 
-    fun replaceChild(child: NodeType, newChild: NodeType?): NodeType? {
+    protected fun replaceChild(child: NodeType, newChild: NodeType?): NodeType? {
         if (child == root) {
             root = newChild
             newChild?.parent = null
