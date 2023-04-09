@@ -3,6 +3,11 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+package trees.nodes/*
+ * Copyright (c) 2023 teemEight
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 import trees.interfaces.Node
 
 abstract class MyNode<T : Comparable<T>, Subtype : MyNode<T, Subtype>> : Node<T, Subtype> {
