@@ -65,7 +65,7 @@ class RBTree<T : Comparable<T>> : ABSTree<T, RBNode<T>>() {
         return (simpleContains(root, RBNode(data)) != null)
     }
 
-    fun balanceDelete(node: RBNode<T>?): RBNode<T>? {
+    private fun balanceDelete(node: RBNode<T>?): RBNode<T>? {
         var newRoot = root
         var current = node
 
@@ -124,7 +124,7 @@ class RBTree<T : Comparable<T>> : ABSTree<T, RBNode<T>>() {
         return newRoot
     }
 
-    fun balanceAdd(initNode: RBNode<T>?, subRoot: RBNode<T>?): RBNode<T>? {
+    private fun balanceAdd(initNode: RBNode<T>?, subRoot: RBNode<T>?): RBNode<T>? {
         if (initNode?.parent == null) return subRoot
         var newRoot = subRoot
         var current = initNode
@@ -171,7 +171,7 @@ class RBTree<T : Comparable<T>> : ABSTree<T, RBNode<T>>() {
         return simpleContains(root, RBNode(data))?.data
     }
 
-    fun clearRotateLeft(node: RBNode<T>?, initRoot: RBNode<T>?): RBNode<T>? {
+    private fun clearRotateLeft(node: RBNode<T>?, initRoot: RBNode<T>?): RBNode<T>? {
         if (node?.right == null) return null
 
         var newRoot = initRoot
@@ -192,7 +192,7 @@ class RBTree<T : Comparable<T>> : ABSTree<T, RBNode<T>>() {
         return newRoot
     }
 
-    fun clearRotateRight(node: RBNode<T>?, root: RBNode<T>?): RBNode<T>? {
+    private fun clearRotateRight(node: RBNode<T>?, root: RBNode<T>?): RBNode<T>? {
         if (node?.left == null) return null
 
         var newRoot = root
@@ -210,11 +210,11 @@ class RBTree<T : Comparable<T>> : ABSTree<T, RBNode<T>>() {
         return newRoot
     }
 
-    fun isBlack(node: RBNode<T>?): Boolean {
+    private fun isBlack(node: RBNode<T>?): Boolean {
         return ((node == null) || (node.color == Color.BLACK))
     }
 
-    fun isRed(node: RBNode<T>?): Boolean {
+    private fun isRed(node: RBNode<T>?): Boolean {
         return node?.color == Color.RED
     }
 }

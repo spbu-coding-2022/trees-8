@@ -5,9 +5,10 @@
 
 package trees.nodes
 
+import MyNode
 import trees.interfaces.Node
 
-class BSNode<T : Comparable<T>>(override var data: T) : Node<T, BSNode<T>> {
+class BSNode<T : Comparable<T>>(override var data: T) : MyNode<T, BSNode<T>>() {
     override var left: BSNode<T>? = null
     override var right: BSNode<T>? = null
     override var parent: BSNode<T>? = null

@@ -26,8 +26,4 @@ class BSTree<T : Comparable<T>> : ABSTree<T, BSNode<T>>() {
     fun get(data: T): T? {
         return simpleContains(root, BSNode(data))?.data
     }
-
-    fun min(): T? {
-        return root?.let { getMinimal(it).data }
-    }
 }
