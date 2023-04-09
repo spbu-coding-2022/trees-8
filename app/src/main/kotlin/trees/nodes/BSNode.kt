@@ -5,6 +5,7 @@
 
 package trees.nodes
 
+import MyNode
 import trees.interfaces.Node
 
 class BSNode<T : Comparable<T>>(override var data: T) : MyNode<T, BSNode<T>>() {
