@@ -21,6 +21,7 @@ class BSTree<T : Comparable<T>> : ABSTree<T, BSNode<T>>() {
 
     override fun delete(data: T) {
         root = simpleDelete(root, BSNode(data))
+        root?.parent = null
     }
 
     fun get(data: T): T? {
