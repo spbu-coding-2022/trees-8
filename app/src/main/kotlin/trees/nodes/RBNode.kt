@@ -5,7 +5,6 @@
 
 package trees.nodes
 
-import MyNode
 import trees.interfaces.Node
 
 enum class Color {
