@@ -5,34 +5,33 @@
 
 package trees
 
+import trees.interfaces.Node
 import trees.interfaces.Tree
-import trees.nodes.MyNode
 
-abstract class ABSTree<T : Comparable<T>, NodeType : MyNode<T, NodeType>> : Tree<T> {
-    var root: NodeType? = null
-        internal set
+abstract class ABSTree<T : Comparable<T>, NodeType : Node<T, NodeType>> : Tree<T> {
+    protected var root: NodeType? = null
 
-    protected open fun balance(initNode: NodeType?): NodeType? {
+    open fun balance(initNode: NodeType?, type: Boolean=true): NodeType? {
         return initNode
     }
 
-    protected fun simpleAdd(initNode: NodeType?, node: NodeType): NodeType? {
+    fun simpleAdd(initNode: NodeType?, node: NodeType): NodeType? {
 
         if (initNode == null) {
-            return node
+            return balance(node)
         }
 
         if (initNode < node) {
             initNode.right = simpleAdd(initNode.right, node)
             initNode.right?.parent = initNode
-        } else if (initNode > node) {
+        } else {
             initNode.left = simpleAdd(initNode.left, node)
             initNode.left?.parent = initNode
         }
-        return balance(initNode)
+        return balance(initNode, true)
     }
 
-    protected fun simpleDelete(initNode: NodeType?, node: NodeType): NodeType? {
+    fun simpleDelete(initNode: NodeType?, node: NodeType): NodeType? {
         if (initNode == null) {
             return null
         }
@@ -43,7 +42,7 @@ abstract class ABSTree<T : Comparable<T>, NodeType : MyNode<T, NodeType>> : Tree
             initNode.left = simpleDelete(initNode.left, node)
             initNode.left?.parent = initNode
         } else {
-            if ((initNode.left == null) || (initNode.right == null)) {
+            if ((initNode.left == null) or (initNode.right == null)) {
                 return initNode.left ?: initNode.right
             } else {
                 initNode.right?.let {
@@ -54,10 +53,10 @@ abstract class ABSTree<T : Comparable<T>, NodeType : MyNode<T, NodeType>> : Tree
                 }
             }
         }
-        return balance(initNode)
+        return balance(initNode, false)
     }
 
-    protected fun simpleContains(initNode: NodeType?, node: NodeType): NodeType? {
+    fun simpleContains(initNode: NodeType?, node: NodeType): NodeType? {
         if (initNode == null) {
             return null
         }
@@ -71,7 +70,7 @@ abstract class ABSTree<T : Comparable<T>, NodeType : MyNode<T, NodeType>> : Tree
         }
     }
 
-    protected fun getMinimal(node: NodeType): NodeType {
+    fun getMinimal(node: NodeType): NodeType {
         var minNode = node
         while (true) {
             minNode = minNode.left ?: break
@@ -79,7 +78,7 @@ abstract class ABSTree<T : Comparable<T>, NodeType : MyNode<T, NodeType>> : Tree
         return minNode
     }
 
-    protected fun getMaximal(node: NodeType): NodeType {
+    fun getMaximal(node: NodeType): NodeType {
         var maxNode = node
         while (true) {
             maxNode = maxNode.left ?: break
@@ -87,7 +86,7 @@ abstract class ABSTree<T : Comparable<T>, NodeType : MyNode<T, NodeType>> : Tree
         return maxNode
     }
 
-    protected fun rotateLeft(node: NodeType): NodeType? {
+    fun rotateLeft(node: NodeType): NodeType? {
         val rightChild = node.right
         val secondSubtree = rightChild?.left
         rightChild?.left = node
@@ -97,7 +96,7 @@ abstract class ABSTree<T : Comparable<T>, NodeType : MyNode<T, NodeType>> : Tree
         return rightChild
     }
 
-    protected fun rotateRight(node: NodeType): NodeType? {
+    fun rotateRight(node: NodeType): NodeType? {
         val leftChild = node.left
         val secondSubtree = leftChild?.right
         leftChild?.right = node
@@ -107,18 +106,4 @@ abstract class ABSTree<T : Comparable<T>, NodeType : MyNode<T, NodeType>> : Tree
         return leftChild
     }
 
-    protected fun replaceChild(child: NodeType, newChild: NodeType?): NodeType? {
-        if (child == root) {
-            root = newChild
-            newChild?.parent = null
-            return newChild
-        }
-        if (child.parent?.left == child) {
-            child.parent?.left = newChild
-        } else if (child.parent?.right == child) {
-            child.parent?.right = newChild
-        }
-        newChild?.parent = child.parent
-        return newChild
-    }
 }

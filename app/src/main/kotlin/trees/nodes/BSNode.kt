@@ -7,7 +7,7 @@ package trees.nodes
 
 import trees.interfaces.Node
 
-class BSNode<T : Comparable<T>>(override var data: T) : MyNode<T, BSNode<T>>() {
+class BSNode<T : Comparable<T>>(override var data: T) : Node<T, BSNode<T>> {
     override var left: BSNode<T>? = null
     override var right: BSNode<T>? = null
     override var parent: BSNode<T>? = null
@@ -21,9 +21,5 @@ class BSNode<T : Comparable<T>>(override var data: T) : MyNode<T, BSNode<T>>() {
             return data.equals(other.data)
         }
         return false
-    }
-
-    override fun toString(): String {
-        return "$data"
     }
 }

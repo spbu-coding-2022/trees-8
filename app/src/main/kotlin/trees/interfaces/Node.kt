@@ -6,8 +6,8 @@
 package trees.interfaces
 
 interface Node<T : Comparable<T>, Subtype : Node<T, Subtype>> : Comparable<Node<T, Subtype>> {
-    val data: T
-    val left: Subtype?
-    val right: Subtype?
-    val parent: Subtype?
+    var data: T
+    var left: Subtype?
+    var right: Subtype?
+    var parent: Subtype?
 }
