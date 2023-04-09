@@ -21,13 +21,10 @@ class BSTree<T : Comparable<T>> : ABSTree<T, BSNode<T>>() {
 
     override fun delete(data: T) {
         root = simpleDelete(root, BSNode(data))
+        root?.parent = null
     }
 
     fun get(data: T): T? {
         return simpleContains(root, BSNode(data))?.data
-    }
-
-    fun min(): T? {
-        return root?.let { getMinimal(it).data }
     }
 }

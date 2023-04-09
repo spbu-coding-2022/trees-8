@@ -12,7 +12,7 @@ enum class Color {
     BLACK
 }
 
-class RBNode<T : Comparable<T>>(override var data: T) : Node<T, RBNode<T>> {
+class RBNode<T : Comparable<T>>(override var data: T) : MyNode<T, RBNode<T>>() {
     var color: Color = Color.RED
     override var left: RBNode<T>? = null
     override var right: RBNode<T>? = null
@@ -27,5 +27,9 @@ class RBNode<T : Comparable<T>>(override var data: T) : Node<T, RBNode<T>> {
             return data.equals(other.data)
         }
         return false
+    }
+
+    override fun toString(): String {
+        return "$color - $data"
     }
 }
