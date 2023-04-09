@@ -5,8 +5,8 @@
 
 package trees
 
-import MyNode
 import trees.interfaces.Tree
+import trees.nodes.MyNode
 
 abstract class ABSTree<T : Comparable<T>, NodeType : MyNode<T, NodeType>> : Tree<T> {
     var root: NodeType? = null
