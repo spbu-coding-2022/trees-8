@@ -6,7 +6,8 @@ package trees
 import kotlin.test.Test
 
 class AppTest {
-    @Test fun appHasAGreeting() {
+    @Test
+    fun appHasAGreeting() {
 //        val classUnderTest = App()
 //        assertNotNull(classUnderTest.greeting, "app should have a greeting")
     }

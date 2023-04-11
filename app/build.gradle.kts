@@ -24,10 +24,13 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
 
     // Use the JUnit 5 integration.
-    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.9.1")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.9.2")
 
     // This dependency is used by the application.
     implementation("com.google.guava:guava:31.1-jre")
+    testImplementation("org.testng:testng:7.7.0")
+    testImplementation("org.testng:testng:7.7.0")
+    testImplementation("org.testng:testng:7.7.0")
 }
 
 application {
