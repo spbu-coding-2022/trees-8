@@ -33,7 +33,7 @@ class AVLTree{
 
         if ((node.right != null) && (node.left != null) && (abs(node.balanceFactor()) > 1)) return false
 
-        if (node.parent?.height != max(node.left?.height ?: 0, node.right?.height ?: 0) + 1) return false
+        if (node.height != max(node.left?.height ?: 0, node.right?.height ?: 0) + 1) return false
 
         return checkerInvariant(node.left) && checkerInvariant(node.right)
     }
