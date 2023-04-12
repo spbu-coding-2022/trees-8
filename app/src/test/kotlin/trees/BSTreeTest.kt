@@ -4,25 +4,23 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import trees.nodes.BSNode
 import trees.trees.BSTree
+import java.util.*
 
 class BSTreeTest {
 
     @Test
     fun testInvariant() {
-        val bst = BSTree<KeyValue<Int, Int>>()
-        bst.add(KeyValue(10, 10))
-        bst.add(KeyValue(10, 1))
-        bst.add(KeyValue(10, 9))
-        bst.add(KeyValue(10, 2))
-        bst.add(KeyValue(10, 3))
-        bst.add(KeyValue(10, 4))
-        bst.add(KeyValue(10, 5))
+        val bst = BSTree<Int>()
+        val lst = List(100) { Random(42).nextInt() }
+        for (num in lst) {
+            bst.add(num)
+        }
 
         assertTrue(checkInvariant(bst.root))
 
     }
 
-    private fun checkInvariant(node: BSNode<KeyValue<Int, Int>>?): Boolean {
+    private fun checkInvariant(node: BSNode<Int>?): Boolean {
         if (node == null) return true
         if (node.left != null && node.left!!.data > node.data) {
             return false
