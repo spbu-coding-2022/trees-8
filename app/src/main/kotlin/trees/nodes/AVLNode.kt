@@ -8,7 +8,7 @@ package trees.nodes
 import trees.interfaces.Node
 
 class AVLNode<T : Comparable<T>>(override var data: T) : MyNode<T, AVLNode<T>>() {
-    private var height: Int = 1
+    internal var height: Int = 1
     override var left: AVLNode<T>? = null
     override var right: AVLNode<T>? = null
     override var parent: AVLNode<T>? = null
