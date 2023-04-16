@@ -210,11 +210,11 @@ class RBTree<T : Comparable<T>> : ABSTree<T, RBNode<T>>() {
         return newRoot
     }
 
-    private fun isBlack(node: RBNode<T>?): Boolean {
+    internal fun isBlack(node: RBNode<T>?): Boolean {
         return ((node == null) || (node.color == Color.BLACK))
     }
 
-    private fun isRed(node: RBNode<T>?): Boolean {
+    internal fun isRed(node: RBNode<T>?): Boolean {
         return node?.color == Color.RED
     }
 }

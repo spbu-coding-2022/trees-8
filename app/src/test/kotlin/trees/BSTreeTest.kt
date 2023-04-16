@@ -1,33 +1,62 @@
+/*
+ * Copyright (c) 2023 teemEight
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 package trees
 
-import org.junit.jupiter.api.Assertions.*
-import org.junit.jupiter.api.Test
 import trees.nodes.BSNode
 import trees.trees.BSTree
-import java.util.*
+import kotlin.random.Random
+import kotlin.test.BeforeTest
+import kotlin.test.Test
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
+
 
 class BSTreeTest {
-
-    @Test
-    fun testInvariant() {
-        val bst = BSTree<Int>()
-        val lst = List(100) { Random(42).nextInt() }
-        for (num in lst) {
-            bst.add(num)
-        }
-
-        assertTrue(checkInvariant(bst.root))
-
+    companion object {
+        const val seed = 42
     }
 
-    private fun checkInvariant(node: BSNode<Int>?): Boolean {
-        if (node == null) return true
-        if (node.left != null && node.left!!.data > node.data) {
-            return false
+    private lateinit var tree: BSTree<Int>
+    private lateinit var values: Array<Int>
+    private val randomizer = Random(seed)
+
+    @BeforeTest
+    fun init() {
+        values = Array(1000) { randomizer.nextInt(10000) }
+        tree = BSTree()
+    }
+
+    @Test
+    fun `check invariant while adding`() {
+        for (value in values) {
+            tree.add(value)
+            assertTrue(InvariantTest.checkDataInNodes(tree.root), "Failed invariant, incorrect data")
+            assertTrue(InvariantTest.checkLinksToParent(tree.root), "Failed invariant, incorrect parent's link")
         }
-        if (node.right != null && node.right!!.data < node.data) {
-            return false
+    }
+
+    @Test
+    fun `check invariant while deleting`() {
+        for (value in values) {
+            tree.add(value)
         }
-        return checkInvariant(node.left) && checkInvariant(node.right)
+        values.shuffle(randomizer)
+        for (value in values) {
+            tree.delete(value)
+            assertTrue(InvariantTest.checkDataInNodes(tree.root), "Failed invariant, incorrect data")
+            assertTrue(InvariantTest.checkLinksToParent(tree.root), "Failed invariant, incorrect parent's link")
+        }
+    }
+
+    @Test
+    fun `special incorrect test`() {
+        tree.add(10)
+        tree.root?.left = BSNode(15)
+        tree.root?.right = BSNode(5)
+        assertFalse(InvariantTest.checkDataInNodes(tree.root), "Failed invariant, incorrect data")
+        assertFalse(InvariantTest.checkLinksToParent(tree.root), "Failed invariant, incorrect parent's link")
     }
 }
