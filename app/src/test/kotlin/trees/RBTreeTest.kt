@@ -34,10 +34,19 @@ class RBTreeTest {
     fun `check invariant while adding`() {
         for (value in values) {
             tree.add(value)
-            assertTrue(InvariantTest.checkBlackHeight(tree.root), "Failed invariant, incorrect black height")
-            assertTrue(InvariantTest.checkRedParent(tree, tree.root), "Failed invariant, incorrect color for node")
-            assertTrue(InvariantTest.checkDataInNodes(tree.root), "Failed invariant, incorrect data")
-            assertTrue(InvariantTest.checkLinksToParent(tree.root), "Failed invariant, incorrect parent's link")
+            assertTrue(
+                InvariantTest.checkBlackHeight(tree.root),
+                "Failed invariant, incorrect black height, value: $value"
+            )
+            assertTrue(
+                InvariantTest.checkRedParent(tree.root),
+                "Failed invariant, incorrect color for node, value: $value"
+            )
+            assertTrue(InvariantTest.checkDataInNodes(tree.root), "Failed invariant, incorrect data, value: $value")
+            assertTrue(
+                InvariantTest.checkLinksToParent(tree.root),
+                "Failed invariant, incorrect parent's link, value: $value"
+            )
         }
     }
 
@@ -49,10 +58,19 @@ class RBTreeTest {
         values.shuffle(randomizer)
         for (value in values) {
             tree.delete(value)
-            assertTrue(InvariantTest.checkBlackHeight(tree.root), "Failed invariant, incorrect black height")
-            assertTrue(InvariantTest.checkRedParent(tree, tree.root), "Failed invariant, incorrect color for node")
-            assertTrue(InvariantTest.checkDataInNodes(tree.root), "Failed invariant, incorrect data")
-            assertTrue(InvariantTest.checkLinksToParent(tree.root), "Failed invariant, incorrect parent's link")
+            assertTrue(
+                InvariantTest.checkBlackHeight(tree.root),
+                "Failed invariant, incorrect black height, value: $value"
+            )
+            assertTrue(
+                InvariantTest.checkRedParent(tree.root),
+                "Failed invariant, incorrect color for node, value: $value"
+            )
+            assertTrue(InvariantTest.checkDataInNodes(tree.root), "Failed invariant, incorrect data, value: $value")
+            assertTrue(
+                InvariantTest.checkLinksToParent(tree.root),
+                "Failed invariant, incorrect parent's link, value: $value"
+            )
         }
     }
 
@@ -64,7 +82,7 @@ class RBTreeTest {
         tree.root?.right?.color = Color.BLACK
         tree.root?.color = Color.RED
         assertFalse(InvariantTest.checkBlackHeight(tree.root), "Failed invariant, incorrect black height")
-        assertFalse(InvariantTest.checkRedParent(tree, tree.root), "Failed invariant, incorrect color for node")
+        assertFalse(InvariantTest.checkRedParent(tree.root), "Failed invariant, incorrect color for node")
         assertFalse(InvariantTest.checkDataInNodes(tree.root), "Failed invariant, incorrect data")
         assertFalse(InvariantTest.checkLinksToParent(tree.root), "Failed invariant, incorrect parent's link")
     }

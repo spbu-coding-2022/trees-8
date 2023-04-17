@@ -68,12 +68,12 @@ object InvariantTest {
         return getBlackHeightRB(node).first
     }
 
-    fun <E : Comparable<E>> checkRedParent(tree: RBTree<E>, node: RBNode<E>?): Boolean {
+    fun <E : Comparable<E>> checkRedParent(node: RBNode<E>?): Boolean {
         if (node == null) return true
-        if (tree.isRed(node)) {
-            if ((tree.isRed(node.left)) or (tree.isRed(node.right)))
+        if (RBTree.isRed(node)) {
+            if ((RBTree.isRed(node.left)) or (RBTree.isRed(node.right)))
                 return false
         }
-        return checkRedParent(tree, node.left) && checkRedParent(tree, node.right)
+        return checkRedParent(node.left) && checkRedParent(node.right)
     }
 }

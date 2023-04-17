@@ -33,9 +33,12 @@ class AVLTreeTest {
     fun `check invariant while adding`() {
         for (value in values) {
             tree.add(value)
-            assertTrue(InvariantTest.checkHeightAVL(tree.root), "Failed invariant, incorrect height")
-            assertTrue(InvariantTest.checkDataInNodes(tree.root), "Failed invariant, incorrect data")
-            assertTrue(InvariantTest.checkLinksToParent(tree.root), "Failed invariant, incorrect parent's link")
+            assertTrue(InvariantTest.checkHeightAVL(tree.root), "Failed invariant, incorrect height, value: $value")
+            assertTrue(InvariantTest.checkDataInNodes(tree.root), "Failed invariant, incorrect data, value: $value")
+            assertTrue(
+                InvariantTest.checkLinksToParent(tree.root),
+                "Failed invariant, incorrect parent's link, value: $value"
+            )
         }
     }
 
@@ -47,9 +50,12 @@ class AVLTreeTest {
         values.shuffle(randomizer)
         for (value in values) {
             tree.delete(value)
-            assertTrue(InvariantTest.checkHeightAVL(tree.root), "Failed invariant, incorrect height")
-            assertTrue(InvariantTest.checkDataInNodes(tree.root), "Failed invariant, incorrect data")
-            assertTrue(InvariantTest.checkLinksToParent(tree.root), "Failed invariant, incorrect parent's link")
+            assertTrue(InvariantTest.checkHeightAVL(tree.root), "Failed invariant, incorrect height, value: $value")
+            assertTrue(InvariantTest.checkDataInNodes(tree.root), "Failed invariant, incorrect data, value: $value")
+            assertTrue(
+                InvariantTest.checkLinksToParent(tree.root),
+                "Failed invariant, incorrect parent's link, value: $value"
+            )
         }
     }
 

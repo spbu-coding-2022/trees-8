@@ -10,6 +10,18 @@ import trees.nodes.Color
 import trees.nodes.RBNode
 
 class RBTree<T : Comparable<T>> : ABSTree<T, RBNode<T>>() {
+    companion object {
+        @JvmStatic
+        internal fun <T : Comparable<T>> isBlack(node: RBNode<T>?): Boolean {
+            return ((node == null) || (node.color == Color.BLACK))
+        }
+
+        @JvmStatic
+        internal fun <T : Comparable<T>> isRed(node: RBNode<T>?): Boolean {
+            return node?.color == Color.RED
+        }
+    }
+
     override fun add(data: T) {
         val node = RBNode(data)
         root = simpleAdd(root, node)
@@ -208,13 +220,5 @@ class RBTree<T : Comparable<T>> : ABSTree<T, RBNode<T>>() {
         }
         subTree?.parent = parent
         return newRoot
-    }
-
-    internal fun isBlack(node: RBNode<T>?): Boolean {
-        return ((node == null) || (node.color == Color.BLACK))
-    }
-
-    internal fun isRed(node: RBNode<T>?): Boolean {
-        return node?.color == Color.RED
     }
 }
