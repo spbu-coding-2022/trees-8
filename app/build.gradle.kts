@@ -33,9 +33,9 @@ dependencies {
 
     // This dependency is used by the application.
     implementation("com.google.guava:guava:31.1-jre")
+    implementation("org.neo4j.driver:neo4j-java-driver:5.6.0")
     testImplementation("org.testng:testng:7.7.0")
-    testImplementation("org.testng:testng:7.7.0")
-    testImplementation("org.testng:testng:7.7.0")
+
 }
 
 application {
