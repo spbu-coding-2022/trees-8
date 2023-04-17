@@ -5,10 +5,8 @@
 
 package trees.nodes
 
-import trees.interfaces.Node
-
-class AVLNode<T : Comparable<T>>(override var data: T) : MyNode<T, AVLNode<T>>() {
-    private var height: Int = 1
+data class AVLNode<T : Comparable<T>>(override var data: T) : MyNode<T, AVLNode<T>>() {
+    internal var height: Int = 1
     override var left: AVLNode<T>? = null
     override var right: AVLNode<T>? = null
     override var parent: AVLNode<T>? = null
@@ -28,18 +26,18 @@ class AVLNode<T : Comparable<T>>(override var data: T) : MyNode<T, AVLNode<T>>()
         return (rightNode?.height ?: 0) - (leftNode?.height ?: 0)
     }
 
-    override fun compareTo(other: Node<T, AVLNode<T>>): Int {
-        return data.compareTo(other.data)
-    }
-
     override fun equals(other: Any?): Boolean {
         if (other is AVLNode<*>) {
-            return data.equals(other.data)
+            return data == other.data
         }
         return false
     }
 
     override fun toString(): String {
         return "$data"
+    }
+
+    override fun hashCode(): Int {
+        return data.hashCode()
     }
 }
