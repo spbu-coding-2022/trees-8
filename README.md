@@ -1,4 +1,4 @@
-# ABOBA
+# Trees
 
 teemEight's project of implementation of three trees: AVL, red-black, binary
 
@@ -10,11 +10,15 @@ teemEight's project of implementation of three trees: AVL, red-black, binary
 - [отдел продаж](https://steamcommunity.com/groups/Otedel_Prodaj) [@wokuparalyzed](https://www.github.com/wokuparalyzed)
 - [and their fans](https://steamcommunity.com/groups/kazakhstansgaminggirls) [@Lesh79](https://www.github.com/Lesh79)
 
+## About
+
+This project provides access to three types of binary-search trees: red-black, AVL, binary
+
 ## Features
 
-- Add
-- Delete
-- Contains
+- add
+- delete
+- contains
 - Cross platform
 - Deploy
 - Bugs
@@ -33,9 +37,10 @@ If you have any feedback, please reach out to us at Issues
 
 ## About Me
 
-I'm a full stack developer... \
-Help please...(( \
+I'm a full stack developer... (( \
 18-20 y.o SPBU SE
+<details>
+<summary></summary> 
 
 ## 🛠 Skills
 
@@ -48,5 +53,9 @@ Help please...(( \
 [![gradle](https://img.shields.io/badge/gradle-FFFFFF?style=for-the-badge&logo=gradle&logoColor=black&)](https://gradle.org/) \
 [<img src="https://minio.nplus1.ru/app-images/178182/60d7b371c9ad2a17c302b00d4d5a74b8.jpg" height=30 width=98>](https://youtu.be/6Cv2kmgX0So?t=30) \
 [<img src="https://media.proglib.io/wp-uploads/2017/10/kotlin.jpg" height=30 width=98>](https://kotlinlang.org/) \
-[<img src="https://i.imgur.com/x7HvhQT.png" height=30 width=98>](https://kotlinlang.org/) 
+[<img src="https://i.imgur.com/x7HvhQT.png" height=30 width=98>](https://www.youtube.com/watch?v=_CTod1hk-bc) \
+[<img src="https://repository-images.githubusercontent.com/2489216/24a1f980-8651-11eb-9707-7b75bab40c9e" height=30 width=98>](https://i.imgur.com/rgGO1Oc.png)
+
+
+</details>
 

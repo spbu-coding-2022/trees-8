@@ -64,4 +64,12 @@ class AVLTreeTest {
         assertFalse(InvariantTest.checkDataInNodes(tree.root), "Failed invariant, incorrect data")
         assertFalse(InvariantTest.checkLinksToParent(tree.root), "Failed invariant, incorrect parent's link")
     }
+
+    @Test
+    fun `check for the presence of elements`() {
+        for (value in values) {
+            tree.add(value)
+            assertTrue(tree.contain(value))
+        }
+    }
 }
