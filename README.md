@@ -14,6 +14,15 @@ teemEight's project of implementation of three trees: AVL, red-black, binary
 
 This project provides access to three types of binary-search trees: red-black, AVL, binary
 
+## Roadmap
+
+- [x] License
+- [x] CI
+- [x] Realized all types of trees
+- [x] Added tests
+- [ ] Storing in databases
+- [ ] GUI
+
 ## Features
 
 - add

@@ -23,4 +23,15 @@ abstract class MyNode<T : Comparable<T>, Subtype : MyNode<T, Subtype>> : Node<T,
     override fun compareTo(other: Node<T, Subtype>): Int {
         return data.compareTo(other.data)
     }
+
+    override fun hashCode(): Int {
+        return data.hashCode()
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (other is MyNode<*, *>) {
+            return data == other.data
+        }
+        return false
+    }
 }
