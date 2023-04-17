@@ -36,6 +36,9 @@ dependencies {
     testImplementation("org.testng:testng:7.7.0")
     testImplementation("org.testng:testng:7.7.0")
     testImplementation("org.testng:testng:7.7.0")
+
+    // This dependency is needed to use JSon
+    implementation("com.google.code.gson:gson:2.8.9")
 }
 
 application {
