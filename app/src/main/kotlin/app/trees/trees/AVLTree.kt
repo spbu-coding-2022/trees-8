@@ -3,10 +3,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-package trees.trees
+package app.trees.trees
 
-import trees.ABSTree
-import trees.nodes.AVLNode
+import app.trees.ABSTree
+import app.trees.nodes.AVLNode
 
 class AVLTree<T : Comparable<T>> : ABSTree<T, AVLNode<T>>() {
 

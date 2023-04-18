@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-package trees.interfaces
+package app.trees.interfaces
 
 interface Tree<T : Comparable<T>> {
     fun add(data: T)

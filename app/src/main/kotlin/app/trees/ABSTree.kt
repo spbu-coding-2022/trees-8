@@ -3,10 +3,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-package trees
+package app.trees
 
-import trees.interfaces.Tree
-import trees.nodes.MyNode
+import app.trees.interfaces.Tree
+import app.trees.nodes.MyNode
 
 abstract class ABSTree<T : Comparable<T>, NodeType : MyNode<T, NodeType>> : Tree<T> {
     var root: NodeType? = null
@@ -120,5 +120,17 @@ abstract class ABSTree<T : Comparable<T>, NodeType : MyNode<T, NodeType>> : Tree
         }
         newChild?.parent = child.parent
         return newChild
+    }
+
+    fun preOrder(): List<NodeType> {
+        val result = mutableListOf<NodeType>()
+        fun walk(node: NodeType, lst: MutableList<NodeType>) {
+            lst.add(node)
+            node.left?.let { walk(it, lst) }
+            node.right?.let { walk(it, lst) }
+        }
+        if (root == null) return result
+        root?.let { walk(it, result) }
+        return result
     }
 }

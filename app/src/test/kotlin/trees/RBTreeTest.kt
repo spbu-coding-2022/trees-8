@@ -6,9 +6,9 @@
 package trees
 
 
-import trees.nodes.Color
-import trees.nodes.RBNode
-import trees.trees.RBTree
+import app.trees.nodes.Color
+import app.trees.nodes.RBNode
+import app.trees.trees.RBTree
 import kotlin.random.Random
 import kotlin.test.BeforeTest
 import kotlin.test.Test

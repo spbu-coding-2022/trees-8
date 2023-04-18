@@ -3,18 +3,21 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-package trees.nodes
+package app.trees.nodes
 
 enum class Color {
     RED,
     BLACK
 }
 
-class RBNode<T : Comparable<T>>(override var data: T) : MyNode<T, RBNode<T>>() {
-    var color: Color = Color.RED
-    override var left: RBNode<T>? = null
-    override var right: RBNode<T>? = null
-    override var parent: RBNode<T>? = null
+class RBNode<T : Comparable<T>>(
+    override var data: T,
+    var color: Color = Color.RED,
+    override var left: RBNode<T>? = null,
+    override var right: RBNode<T>? = null,
+    override var parent: RBNode<T>? = null,
+) : MyNode<T, RBNode<T>>() {
+
 
     override fun equals(other: Any?): Boolean {
         if (other is RBNode<*>) {

@@ -3,10 +3,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-package trees.trees
+package app.trees.trees
 
-import trees.ABSTree
-import trees.nodes.BSNode
+import app.trees.ABSTree
+import app.trees.nodes.BSNode
 
 class BSTree<T : Comparable<T>> : ABSTree<T, BSNode<T>>() {
 

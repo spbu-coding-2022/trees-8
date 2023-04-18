@@ -3,11 +3,11 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-package trees.trees
+package app.trees.trees
 
-import trees.ABSTree
-import trees.nodes.Color
-import trees.nodes.RBNode
+import app.trees.ABSTree
+import app.trees.nodes.Color
+import app.trees.nodes.RBNode
 
 class RBTree<T : Comparable<T>> : ABSTree<T, RBNode<T>>() {
     companion object {

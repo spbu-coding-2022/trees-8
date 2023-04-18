@@ -5,8 +5,8 @@
 
 package trees
 
-import trees.nodes.AVLNode
-import trees.trees.AVLTree
+import app.trees.nodes.AVLNode
+import app.trees.trees.AVLTree
 import kotlin.random.Random
 import kotlin.test.BeforeTest
 import kotlin.test.Test

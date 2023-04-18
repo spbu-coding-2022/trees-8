@@ -8,11 +8,11 @@
  */
 package trees
 
-import trees.interfaces.Node
-import trees.nodes.AVLNode
-import trees.nodes.Color
-import trees.nodes.RBNode
-import trees.trees.RBTree
+import app.trees.interfaces.Node
+import app.trees.nodes.AVLNode
+import app.trees.nodes.Color
+import app.trees.nodes.RBNode
+import app.trees.trees.RBTree
 import kotlin.math.abs
 
 object InvariantTest {

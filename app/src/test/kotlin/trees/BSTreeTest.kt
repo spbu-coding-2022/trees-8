@@ -5,8 +5,8 @@
 
 package trees
 
-import trees.nodes.BSNode
-import trees.trees.BSTree
+import app.trees.nodes.BSNode
+import app.trees.trees.BSTree
 import kotlin.random.Random
 import kotlin.test.BeforeTest
 import kotlin.test.Test

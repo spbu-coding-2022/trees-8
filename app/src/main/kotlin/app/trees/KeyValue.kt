@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-package trees
+package app.trees
 
 class KeyValue<K : Comparable<K>, V>(private val key: K, private var value: V?) : Comparable<KeyValue<K, V>> {
     fun getKey(): K {

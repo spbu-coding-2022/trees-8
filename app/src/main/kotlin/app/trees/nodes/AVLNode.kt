@@ -3,13 +3,15 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-package trees.nodes
+package app.trees.nodes
 
-data class AVLNode<T : Comparable<T>>(override var data: T) : MyNode<T, AVLNode<T>>() {
-    internal var height: Int = 1
-    override var left: AVLNode<T>? = null
-    override var right: AVLNode<T>? = null
-    override var parent: AVLNode<T>? = null
+data class AVLNode<T : Comparable<T>>(
+    override var data: T,
+    internal var height: Int = 1,
+    override var left: AVLNode<T>? = null,
+    override var right: AVLNode<T>? = null,
+    override var parent: AVLNode<T>? = null,
+) : MyNode<T, AVLNode<T>>() {
 
 
     internal fun updateHeight() {

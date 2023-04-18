@@ -3,12 +3,15 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-package trees.nodes
+package app.trees.nodes
 
-data class BSNode<T : Comparable<T>>(override var data: T) : MyNode<T, BSNode<T>>() {
-    override var left: BSNode<T>? = null
-    override var right: BSNode<T>? = null
-    override var parent: BSNode<T>? = null
+data class BSNode<T : Comparable<T>>(
+    override var data: T,
+    override var left: BSNode<T>? = null,
+    override var right: BSNode<T>? = null,
+    override var parent: BSNode<T>? = null,
+) : MyNode<T, BSNode<T>>() {
+
 
     override fun equals(other: Any?): Boolean {
         if (other is BSNode<*>) {

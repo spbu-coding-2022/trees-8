@@ -14,6 +14,7 @@
 plugins {
     // Apply the org.jetbrains.kotlin.jvm Plugin to add support for Kotlin.
     id("org.jetbrains.kotlin.jvm") version "1.8.10"
+    kotlin("plugin.serialization") version "1.8.20"
 
     // Apply the application plugin to add support for building a CLI application in Java.
     application
@@ -33,8 +34,10 @@ dependencies {
 
     // This dependency is used by the application.
     implementation("com.google.guava:guava:31.1-jre")
-    implementation("org.neo4j.driver:neo4j-java-driver:5.6.0")
     testImplementation("org.testng:testng:7.7.0")
+    implementation("org.neo4j:neo4j-ogm-core:4.0.5")
+    runtimeOnly("org.neo4j:neo4j-ogm-bolt-driver:4.0.5")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
 
 }
 
