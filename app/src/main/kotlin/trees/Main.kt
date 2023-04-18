@@ -1,17 +1,11 @@
-/*
- * Copyright (c) 2023 teemEight
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import java.io.File
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import trees.KeyValue
 import trees.trees.BSTree
 
-
-fun writeToJSon(array: Array<Int>, fileName: String) {
-    val map = mutableMapOf<String, Int>()
+fun writeToJSon(array: Array<Any>, fileName: String) {
+    val map = mutableMapOf<String, Any>()
     for (i in array.indices step 2) {
         map["key${i/2}"] = array[i]
         map["value${i/2}"] = array[i+1]
@@ -22,30 +16,28 @@ fun writeToJSon(array: Array<Int>, fileName: String) {
     file.writeText(jsonString)
 }
 
-fun buildBSTreeFromJson(jsonFileName: String): BSTree<KeyValue<Int, Int>> {
+fun buildBSTreeFromJson(jsonFileName: String): BSTree<KeyValue<Int, Any>> {
     val gson = Gson()
     val file = File(jsonFileName)
     val jsonString = file.readText()
-    val type = object : TypeToken<Map<String, Int>>() {}.type
-    val myMapRead: Map<String, Int> = gson.fromJson(jsonString, type)
+    val type = object : TypeToken<Map<String, Any>>() {}.type
+    val myMapRead: Map<String, Any> = gson.fromJson(jsonString, type)
 
-    val BStree = BSTree<KeyValue<Int, Int>>()
+    val BStree = BSTree<KeyValue<Int, Any>>()
     for (i in myMapRead.keys) {
         if (i.startsWith("key")) {
             val keyIndex = i.substring(3).toInt()
             val valueKey = myMapRead["value$keyIndex"]
-            val keyValue = KeyValue(myMapRead[i]!!, valueKey!!)
+            val keyValue = KeyValue(myMapRead[i] as Int, valueKey)
             BStree.add(keyValue)
         }
     }
     return BStree
 }
 
-
 fun main() {
-    val myArray = arrayOf(10, 100, 15, 150, 20, 200, 14, 140)
+    val myArray = arrayOf<Any>(10, "asd", 15, "Privet", 20, "Ti Pidor", 14, "suchiy")
     writeToJSon(myArray, "data.json")
 
     val tree = buildBSTreeFromJson("data.json")
-
 }
