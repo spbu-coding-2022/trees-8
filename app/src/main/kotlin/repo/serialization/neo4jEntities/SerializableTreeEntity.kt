@@ -8,16 +8,16 @@ package repo.serialization.neo4jEntities
 import org.neo4j.ogm.annotation.*
 import repo.serialization.TypeOfTree
 
-@NodeEntity
+@NodeEntity("Tree")
 class SerializableTreeEntity(
-    @Property
-    var verboseName: String,
+    @Property("name")
+    var name: String,
 
-    @Property
+    @Property("typeOfTree")
     var typeOfTree: TypeOfTree,
 
-    @Relationship(type = "ROOT")
-    var root: SerializableNodeEntity? = null,
+    @Relationship(type = "ROOT", direction = Relationship.Direction.OUTGOING)
+    var root: SerializableNodeEntity?,
 ) {
 
     @Id

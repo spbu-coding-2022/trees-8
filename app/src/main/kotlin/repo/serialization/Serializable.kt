@@ -8,10 +8,10 @@ package repo.serialization
 import kotlinx.serialization.Serializable
 
 @Serializable
-enum class TypeOfTree(val savingName: String) {
-    BINARY_SEARCH_TREE("BINARY_SEARCH_TREE"),
-    RED_BLACK_TREE("RED_BLACK_TREE"),
-    AVL_TREE("AVL_TREE")
+enum class TypeOfTree {
+    BINARY_SEARCH_TREE,
+    RED_BLACK_TREE,
+    AVL_TREE
 }
 
 @Serializable
@@ -20,7 +20,6 @@ class SerializableNode(
     val metadata: Metadata,
     val left: SerializableNode? = null,
     val right: SerializableNode? = null,
-    val parent: SerializableNode? = null,
 )
 
 @Serializable

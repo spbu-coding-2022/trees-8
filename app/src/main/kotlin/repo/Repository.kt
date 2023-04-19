@@ -22,7 +22,6 @@ abstract class Repository<E : Comparable<E>,
             strategy.serializeMetadata(this),
             left?.toSerializableNode(),
             right?.toSerializableNode(),
-            parent?.toSerializableNode(),
         )
     }
 
