@@ -12,7 +12,10 @@ teemEight's project of implementation of three trees: AVL, red-black, binary
 
 ## About
 
-This project provides access to three types of binary-search trees: red-black, AVL, binary
+It is a library that provides kotlin implementations of 3 binary search trees data
+structures: [BS tree](https://en.wikipedia.org/wiki/Binary_search_tree), [AVL tree](https://en.wikipedia.org/wiki/AVL_trees), [Red-black tree](https://en.wikipedia.org/wiki/Red–black_tree).
+It also provides storing BSTs in either plain `.json` files, `SQLite`
+or `neo4j` databases.
 
 ## Roadmap
 
@@ -20,33 +23,31 @@ This project provides access to three types of binary-search trees: red-black, A
 - [x] CI
 - [x] Realized all types of trees
 - [x] Added tests
-- [ ] Storing in databases
+- Storing with:
+    - [x] Neo4j
+    - [ ] Sqlite
+    - [ ] json
 - [ ] GUI
-
-## Features
-
-- add
-- delete
-- contains
-- Cross platform
-- Deploy
-- Bugs
 
 ## Building
 
 To build this project run
 
 ```bash
-  gradle build
+  ./gradlew build
 ```
+
+## How to use
+
+See official [documentation](/DOCS.md)
 
 ## Feedback
 
 If you have any feedback, please reach out to us at Issues
 
-## About Me
+## About creators
 
-I'm a full stack developer... (( \
+We're a full stack developers... (( \
 18-20 y.o SPBU SE
 <details>
 <summary></summary> 
