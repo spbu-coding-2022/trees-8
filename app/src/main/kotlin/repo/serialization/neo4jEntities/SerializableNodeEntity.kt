@@ -9,12 +9,12 @@ import org.neo4j.ogm.annotation.*
 import repo.serialization.Metadata
 import repo.serialization.SerializableValue
 
-@NodeEntity
+@NodeEntity("Node")
 class SerializableNodeEntity(
-    @Property
+    @Property("data")
     var value: SerializableValue,
 
-    @Property
+    @Property("metadata")
     var metadata: Metadata,
 
     @Relationship(type = "LEFT", direction = Relationship.Direction.OUTGOING)

@@ -18,13 +18,15 @@ import repo.serialization.neo4jEntities.SerializableNodeEntity
 import repo.serialization.neo4jEntities.SerializableTreeEntity
 import repo.serialization.strategies.Serialization
 
-class Neo4jRepo<E : Comparable<E>,
+class Neo4jRepo<
+        E : Comparable<E>,
         NodeType : MyNode<E, NodeType>,
-        TreeType : ABSTree<E, NodeType>>(
+        TreeType : ABSTree<E, NodeType>,
+        >(
     strategy: Serialization<E, NodeType, TreeType, *>,
     configuration: Configuration
 ) : Repository<E, NodeType, TreeType>(strategy) {
-    private val sessionFactory = SessionFactory(configuration, "app.model.repo")
+    private val sessionFactory = SessionFactory(configuration, "repo")
     private val session = sessionFactory.openSession()
 
     private fun SerializableNodeEntity.toSerializableNode(): SerializableNode {
@@ -38,7 +40,7 @@ class Neo4jRepo<E : Comparable<E>,
 
     private fun SerializableTreeEntity.toTree(): SerializableTree {
         return SerializableTree(
-            verboseName,
+            name,
             typeOfTree,
             root?.toSerializableNode(),
         )
@@ -70,20 +72,19 @@ class Neo4jRepo<E : Comparable<E>,
     private fun findByVerboseName(verboseName: String) = session.loadAll(
         SerializableTreeEntity::class.java,
         Filters().and(
-            Filter("verboseName", ComparisonOperator.EQUALS, verboseName)
+            Filter("name", ComparisonOperator.EQUALS, verboseName)
         ).and(
             Filter("typeOfTree", ComparisonOperator.EQUALS, strategy.typeOfTree)
         ),
         -1
     )
 
-    override fun loadByVerboseName(verboseName: String): TreeType? {
-        val tree = findByVerboseName(verboseName).singleOrNull()?.let {
-            strategy.createTree().apply {
-                root = it.root?.deserialize()
-            }
+    override fun loadByVerboseName(verboseName: String): TreeType {
+        val tree = findByVerboseName(verboseName).singleOrNull()
+        val result = strategy.createTree().apply {
+            root = tree?.root?.deserialize()
         }
-        return tree
+        return result
     }
 
     override fun deleteByVerboseName(verboseName: String) {
