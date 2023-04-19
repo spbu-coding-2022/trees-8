@@ -43,10 +43,6 @@ noArg {
     annotation("org.neo4j.ogm.annotation.RelationshipEntity")
 }
 
-kotlin {
-    jvmToolchain(8)
-}
-
 application {
     // Define the main class for the application.
     mainClass.set("MainKt")
