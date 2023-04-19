@@ -14,13 +14,13 @@ import repo.serialization.TypeOfTree
 
 
 abstract class Serialization<
-        E : Comparable<E>,
-        NodeType : MyNode<E, NodeType>,
-        TreeType : ABSTree<E, NodeType>,
+        T : Comparable<T>,
+        NodeType : MyNode<T, NodeType>,
+        TreeType : ABSTree<T, NodeType>,
         M,
         >(
-    val serializeValue: (E) -> SerializableValue,
-    val deserializeValue: (SerializableValue) -> E,
+    val serializeValue: (T) -> SerializableValue,
+    val deserializeValue: (SerializableValue) -> T,
 ) {
     abstract val typeOfTree: TypeOfTree
     abstract fun createNode(node: SerializableNode?): NodeType?

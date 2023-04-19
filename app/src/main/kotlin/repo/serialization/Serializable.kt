@@ -16,7 +16,7 @@ enum class TypeOfTree {
 
 @Serializable
 class SerializableNode(
-    val value: SerializableValue,
+    val data: SerializableValue,
     val metadata: Metadata,
     val left: SerializableNode? = null,
     val right: SerializableNode? = null,
@@ -24,7 +24,7 @@ class SerializableNode(
 
 @Serializable
 class SerializableTree(
-    val verboseName: String,
+    val name: String,
     val typeOfTree: TypeOfTree,
     val root: SerializableNode?,
 )

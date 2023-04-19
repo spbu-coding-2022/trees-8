@@ -12,7 +12,7 @@ import repo.serialization.SerializableValue
 @NodeEntity("Node")
 class SerializableNodeEntity(
     @Property("data")
-    var value: SerializableValue,
+    var data: SerializableValue,
 
     @Property("metadata")
     var metadata: Metadata,
