@@ -13,14 +13,14 @@ import repo.serialization.SerializableValue
 import repo.serialization.TypeOfTree
 
 class AVLStrategy<T : Comparable<T>>(
-    serializeValue: (T) -> SerializableValue,
-    deserializeValue: (SerializableValue) -> T
-) : Serialization<T, AVLNode<T>, AVLTree<T>, Int>(serializeValue, deserializeValue) {
+    serializeData: (T) -> SerializableValue,
+    deserializeData: (SerializableValue) -> T
+) : Serialization<T, AVLNode<T>, AVLTree<T>, Int>(serializeData, deserializeData) {
     override val typeOfTree: TypeOfTree = TypeOfTree.AVL_TREE
 
     override fun createNode(node: SerializableNode?): AVLNode<T>? = node?.let {
         AVLNode(
-            data = deserializeValue(node.value),
+            data = deserializeValue(node.data),
             left = createNode(node.left),
             right = createNode(node.right),
             height = deserializeMetadata(node.metadata),

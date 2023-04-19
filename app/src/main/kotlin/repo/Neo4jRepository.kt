@@ -19,19 +19,19 @@ import repo.serialization.neo4jEntities.SerializableTreeEntity
 import repo.serialization.strategies.Serialization
 
 class Neo4jRepo<
-        E : Comparable<E>,
-        NodeType : MyNode<E, NodeType>,
-        TreeType : ABSTree<E, NodeType>,
+        T : Comparable<T>,
+        NodeType : MyNode<T, NodeType>,
+        TreeType : ABSTree<T, NodeType>,
         >(
-    strategy: Serialization<E, NodeType, TreeType, *>,
+    strategy: Serialization<T, NodeType, TreeType, *>,
     configuration: Configuration
-) : Repository<E, NodeType, TreeType>(strategy) {
+) : Repository<T, NodeType, TreeType>(strategy) {
     private val sessionFactory = SessionFactory(configuration, "repo")
     private val session = sessionFactory.openSession()
 
     private fun SerializableNodeEntity.toSerializableNode(): SerializableNode {
         return SerializableNode(
-            value,
+            data,
             metadata,
             left?.toSerializableNode(),
             right?.toSerializableNode(),
@@ -48,7 +48,7 @@ class Neo4jRepo<
 
     private fun SerializableNode.toEntity(): SerializableNodeEntity {
         return SerializableNodeEntity(
-            value,
+            data,
             metadata,
             left?.toEntity(),
             right?.toEntity(),
@@ -57,42 +57,42 @@ class Neo4jRepo<
 
     private fun SerializableTree.toEntity(): SerializableTreeEntity {
         return SerializableTreeEntity(
-            verboseName,
+            name,
             typeOfTree,
             root?.toEntity(),
         )
     }
 
-    override fun save(verboseName: String, tree: TreeType) {
-        deleteByVerboseName(verboseName)
-        val entityTree = tree.toSerializableTree(verboseName).toEntity()
+    override fun save(name: String, tree: TreeType) {
+        deleteByName(name)
+        val entityTree = tree.toSerializableTree(name).toEntity()
         session.save(entityTree)
     }
 
-    private fun findByVerboseName(verboseName: String) = session.loadAll(
+    private fun findByVerboseName(name: String) = session.loadAll(
         SerializableTreeEntity::class.java,
         Filters().and(
-            Filter("name", ComparisonOperator.EQUALS, verboseName)
+            Filter("name", ComparisonOperator.EQUALS, name)
         ).and(
             Filter("typeOfTree", ComparisonOperator.EQUALS, strategy.typeOfTree)
         ),
         -1
     )
 
-    override fun loadByVerboseName(verboseName: String): TreeType {
-        val tree = findByVerboseName(verboseName).singleOrNull()
+    override fun loadByName(name: String): TreeType {
+        val tree = findByVerboseName(name).singleOrNull()
         val result = strategy.createTree().apply {
             root = tree?.root?.deserialize()
         }
         return result
     }
 
-    override fun deleteByVerboseName(verboseName: String) {
+    override fun deleteByName(name: String) {
         session.query(
             "MATCH toDelete=(" +
-                    "t:SerializableTreeEntity {typeOfTree: \$typeOfTree, verboseName : \$verboseName}" +
+                    "t:SerializableTreeEntity {typeOfTree: \$typeOfTree, name : \$name}" +
                     ")-[*0..]->() DETACH DELETE toDelete",
-            mapOf("typeOfTree" to strategy.typeOfTree, "verboseName" to verboseName)
+            mapOf("typeOfTree" to strategy.typeOfTree, "name" to name)
         )
     }
 

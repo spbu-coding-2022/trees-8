@@ -11,10 +11,10 @@ import repo.serialization.SerializableNode
 import repo.serialization.SerializableTree
 import repo.serialization.strategies.Serialization
 
-abstract class Repository<E : Comparable<E>,
-        NodeType : MyNode<E, NodeType>,
-        TreeType : ABSTree<E, NodeType>>(
-    protected val strategy: Serialization<E, NodeType, TreeType, *>
+abstract class Repository<T : Comparable<T>,
+        NodeType : MyNode<T, NodeType>,
+        TreeType : ABSTree<T, NodeType>>(
+    protected val strategy: Serialization<T, NodeType, TreeType, *>
 ) {
     protected fun NodeType.toSerializableNode(): SerializableNode {
         return SerializableNode(
@@ -26,15 +26,15 @@ abstract class Repository<E : Comparable<E>,
     }
 
 
-    protected fun TreeType.toSerializableTree(verboseName: String): SerializableTree {
+    protected fun TreeType.toSerializableTree(name: String): SerializableTree {
         return SerializableTree(
-            verboseName = verboseName,
+            name = name,
             typeOfTree = strategy.typeOfTree,
             root = this.root?.toSerializableNode(),
         )
     }
 
-    abstract fun save(verboseName: String, tree: TreeType)
-    abstract fun loadByVerboseName(verboseName: String): TreeType?
-    abstract fun deleteByVerboseName(verboseName: String)
+    abstract fun save(name: String, tree: TreeType)
+    abstract fun loadByName(name: String): TreeType?
+    abstract fun deleteByName(name: String)
 }
