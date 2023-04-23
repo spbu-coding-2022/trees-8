@@ -6,6 +6,7 @@
 package trees
 
 import app.trees.AVLTree
+import app.trees.KeyValue
 import app.trees.nodes.AVLNode
 import kotlin.random.Random
 import kotlin.test.*
@@ -69,7 +70,7 @@ class AVLTreeTest {
     }
 
     @Test
-    fun `deleting from empty tree without exceptions`() {
+    fun `check deleting from empty tree without exceptions`() {
         values.forEach { tree.delete(it) }
         assertNull(tree.root, "Root should be null")
     }
@@ -80,6 +81,20 @@ class AVLTreeTest {
         for (value in values) {
             tree.add(value)
             assertTrue(tree.contains(value))
+        }
+    }
+
+    @Test
+    fun `check using KeyValue in data`() {
+        val newTree = AVLTree<KeyValue<String, Int>>()
+        val keyValue = values.map { KeyValue(it.toString(), it) }
+        for (stringIntKeyValue in keyValue) {
+            newTree.add(stringIntKeyValue)
+            assertEquals(
+                stringIntKeyValue.value,
+                newTree.get(KeyValue(stringIntKeyValue.key, null))?.value,
+                "Values should be equals"
+            )
         }
     }
 }

@@ -6,6 +6,7 @@
 package trees
 
 import app.trees.BSTree
+import app.trees.KeyValue
 import app.trees.nodes.BSNode
 import kotlin.random.Random
 import kotlin.test.*
@@ -72,8 +73,22 @@ class BSTreeTest {
     }
 
     @Test
-    fun `deleting from empty tree without exceptions`() {
+    fun `check deleting from empty tree without exceptions`() {
         values.forEach { tree.delete(it) }
         assertNull(tree.root, "Root should be null")
+    }
+
+    @Test
+    fun `check using KeyValue in data`() {
+        val newTree = BSTree<KeyValue<String, Int>>()
+        val keyValue = values.map { KeyValue(it.toString(), it) }
+        for (stringIntKeyValue in keyValue) {
+            newTree.add(stringIntKeyValue)
+            assertEquals(
+                stringIntKeyValue.value,
+                newTree.get(KeyValue(stringIntKeyValue.key, null))?.value,
+                "Values should be equals"
+            )
+        }
     }
 }
