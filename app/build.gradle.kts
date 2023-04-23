@@ -26,6 +26,7 @@ repositories {
     mavenCentral()
 }
 
+
 dependencies {
     testImplementation(kotlin("test"))
     testImplementation(platform("org.junit:junit-bom:5.9.2"))
@@ -33,6 +34,14 @@ dependencies {
     implementation("org.neo4j:neo4j-ogm-core:4.0.5")
     runtimeOnly("org.neo4j:neo4j-ogm-bolt-driver:4.0.5")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
+
+    // JetBrains Exposed
+    implementation("org.jetbrains.exposed:exposed-core:0.40.1")
+    implementation("org.jetbrains.exposed:exposed-dao:0.40.1")
+    implementation("org.jetbrains.exposed:exposed-jdbc:0.40.1")
+
+    // JDBC Sqlite
+    implementation("org.xerial", "sqlite-jdbc", "3.8.11.2")
 }
 
 tasks.jar {

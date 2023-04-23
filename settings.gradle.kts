@@ -14,6 +14,8 @@
 
 rootProject.name = "trees-8"
 include("app")
+include("sqlite")
+include("sqlite-exposed")
 
 dependencyResolutionManagement {
     versionCatalogs {
