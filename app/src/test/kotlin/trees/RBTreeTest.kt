@@ -6,9 +6,9 @@
 package trees
 
 
+import app.trees.RBTree
 import app.trees.nodes.Color
 import app.trees.nodes.RBNode
-import app.trees.trees.RBTree
 import kotlin.random.Random
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -35,16 +35,16 @@ class RBTreeTest {
         for (value in values) {
             tree.add(value)
             assertTrue(
-                InvariantTest.checkBlackHeight(tree.root),
+                InvariantChecker.checkBlackHeight(tree.root),
                 "Failed invariant, incorrect black height, value: $value"
             )
             assertTrue(
-                InvariantTest.checkRedParent(tree.root),
+                InvariantChecker.checkRedParent(tree.root),
                 "Failed invariant, incorrect color for node, value: $value"
             )
-            assertTrue(InvariantTest.checkDataInNodes(tree.root), "Failed invariant, incorrect data, value: $value")
+            assertTrue(InvariantChecker.checkDataInNodes(tree.root), "Failed invariant, incorrect data, value: $value")
             assertTrue(
-                InvariantTest.checkLinksToParent(tree.root),
+                InvariantChecker.checkLinksToParent(tree.root),
                 "Failed invariant, incorrect parent's link, value: $value"
             )
         }
@@ -59,16 +59,16 @@ class RBTreeTest {
         for (value in values) {
             tree.delete(value)
             assertTrue(
-                InvariantTest.checkBlackHeight(tree.root),
+                InvariantChecker.checkBlackHeight(tree.root),
                 "Failed invariant, incorrect black height, value: $value"
             )
             assertTrue(
-                InvariantTest.checkRedParent(tree.root),
+                InvariantChecker.checkRedParent(tree.root),
                 "Failed invariant, incorrect color for node, value: $value"
             )
-            assertTrue(InvariantTest.checkDataInNodes(tree.root), "Failed invariant, incorrect data, value: $value")
+            assertTrue(InvariantChecker.checkDataInNodes(tree.root), "Failed invariant, incorrect data, value: $value")
             assertTrue(
-                InvariantTest.checkLinksToParent(tree.root),
+                InvariantChecker.checkLinksToParent(tree.root),
                 "Failed invariant, incorrect parent's link, value: $value"
             )
         }
@@ -81,17 +81,17 @@ class RBTreeTest {
         tree.root?.right = RBNode(5)
         tree.root?.right?.color = Color.BLACK
         tree.root?.color = Color.RED
-        assertFalse(InvariantTest.checkBlackHeight(tree.root), "Failed invariant, incorrect black height")
-        assertFalse(InvariantTest.checkRedParent(tree.root), "Failed invariant, incorrect color for node")
-        assertFalse(InvariantTest.checkDataInNodes(tree.root), "Failed invariant, incorrect data")
-        assertFalse(InvariantTest.checkLinksToParent(tree.root), "Failed invariant, incorrect parent's link")
+        assertFalse(InvariantChecker.checkBlackHeight(tree.root), "Failed invariant, incorrect black height")
+        assertFalse(InvariantChecker.checkRedParent(tree.root), "Failed invariant, incorrect color for node")
+        assertFalse(InvariantChecker.checkDataInNodes(tree.root), "Failed invariant, incorrect data")
+        assertFalse(InvariantChecker.checkLinksToParent(tree.root), "Failed invariant, incorrect parent's link")
     }
 
     @Test
     fun `check for the presence of elements`() {
         for (value in values) {
             tree.add(value)
-            assertTrue(tree.contain(value))
+            assertTrue(tree.contains(value))
         }
     }
 }

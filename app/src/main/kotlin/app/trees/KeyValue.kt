@@ -5,14 +5,10 @@
 
 package app.trees
 
-class KeyValue<K : Comparable<K>, V>(private val key: K, private var value: V?) : Comparable<KeyValue<K, V>> {
-    fun getKey(): K {
-        return key
-    }
-
-    fun getValue(): V? {
-        return value
-    }
+class KeyValue<K : Comparable<K>, V>(
+    val key: K,
+    var value: V
+) : Comparable<KeyValue<K, V>> {
 
     override fun compareTo(other: KeyValue<K, V>): Int {
         return key.compareTo(other.key)
@@ -20,7 +16,7 @@ class KeyValue<K : Comparable<K>, V>(private val key: K, private var value: V?) 
 
     override fun equals(other: Any?): Boolean {
         if (other is KeyValue<*, *>) {
-            return key == other.getKey()
+            return key == other.key
         }
         return false
     }

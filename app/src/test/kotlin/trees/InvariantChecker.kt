@@ -8,14 +8,14 @@
  */
 package trees
 
+import app.trees.RBTree
 import app.trees.interfaces.Node
 import app.trees.nodes.AVLNode
 import app.trees.nodes.Color
 import app.trees.nodes.RBNode
-import app.trees.trees.RBTree
 import kotlin.math.abs
 
-object InvariantTest {
+object InvariantChecker {
     fun <E : Comparable<E>, NodeType : Node<E, NodeType>> checkLinksToParent(node: Node<E, NodeType>?): Boolean {
         if (node == null) return true
         var result = true

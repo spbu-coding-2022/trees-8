@@ -6,8 +6,7 @@
 package app.trees.nodes
 
 enum class Color {
-    RED,
-    BLACK
+    RED, BLACK
 }
 
 class RBNode<T : Comparable<T>>(
@@ -16,21 +15,8 @@ class RBNode<T : Comparable<T>>(
     override var left: RBNode<T>? = null,
     override var right: RBNode<T>? = null,
     override var parent: RBNode<T>? = null,
-) : MyNode<T, RBNode<T>>() {
-
-
-    override fun equals(other: Any?): Boolean {
-        if (other is RBNode<*>) {
-            return data == other.data
-        }
-        return false
-    }
-
+) : AbstractNode<T, RBNode<T>>() {
     override fun toString(): String {
         return "$color - $data"
-    }
-
-    override fun hashCode(): Int {
-        return data.hashCode()
     }
 }

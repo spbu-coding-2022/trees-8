@@ -11,7 +11,7 @@ data class AVLNode<T : Comparable<T>>(
     override var left: AVLNode<T>? = null,
     override var right: AVLNode<T>? = null,
     override var parent: AVLNode<T>? = null,
-) : MyNode<T, AVLNode<T>>() {
+) : AbstractNode<T, AVLNode<T>>() {
 
 
     internal fun updateHeight() {
@@ -28,18 +28,4 @@ data class AVLNode<T : Comparable<T>>(
         return (rightNode?.height ?: 0) - (leftNode?.height ?: 0)
     }
 
-    override fun equals(other: Any?): Boolean {
-        if (other is AVLNode<*>) {
-            return data == other.data
-        }
-        return false
-    }
-
-    override fun toString(): String {
-        return "$data"
-    }
-
-    override fun hashCode(): Int {
-        return data.hashCode()
-    }
 }

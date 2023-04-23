@@ -5,8 +5,8 @@
 
 package repo.serialization.strategies
 
+import app.trees.AVLTree
 import app.trees.nodes.AVLNode
-import app.trees.trees.AVLTree
 import repo.serialization.Metadata
 import repo.serialization.SerializableNode
 import repo.serialization.SerializableValue

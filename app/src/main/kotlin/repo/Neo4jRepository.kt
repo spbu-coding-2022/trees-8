@@ -5,8 +5,8 @@
 
 package repo
 
-import app.trees.ABSTree
-import app.trees.nodes.MyNode
+import app.trees.AbstractTree
+import app.trees.nodes.AbstractNode
 import org.neo4j.ogm.config.Configuration
 import org.neo4j.ogm.cypher.ComparisonOperator
 import org.neo4j.ogm.cypher.Filter
@@ -20,8 +20,8 @@ import repo.serialization.strategies.Serialization
 
 class Neo4jRepo<
         T : Comparable<T>,
-        NodeType : MyNode<T, NodeType>,
-        TreeType : ABSTree<T, NodeType>,
+        NodeType : AbstractNode<T, NodeType>,
+        TreeType : AbstractTree<T, NodeType>,
         >(
     strategy: Serialization<T, NodeType, TreeType, *>,
     configuration: Configuration

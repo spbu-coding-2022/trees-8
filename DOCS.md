@@ -12,10 +12,10 @@ Any `Comparable` data can be stored in trees.
 We also provide access to the `KeyValue` class, which allows you to store a key-value pair in the nodes of the tree.
 
 ```kotlin
-import app.trees.KeyValue
 import app.trees.trees.AVLTree
 import app.trees.trees.BSTree
 import app.trees.trees.RBTree
+import app.trees.KeyValue
 
 val alvTree = AVLTree<Int>() // instantiate empty AVL tree
 val bsTree = BSTree<String>() // instantiate empty simple tree

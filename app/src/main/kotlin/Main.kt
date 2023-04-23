@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import app.trees.trees.AVLTree
+import app.trees.AVLTree
 import kotlin.random.Random
 
 fun main(args: Array<String>) {
