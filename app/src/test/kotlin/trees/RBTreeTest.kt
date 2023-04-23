@@ -10,10 +10,7 @@ import app.trees.RBTree
 import app.trees.nodes.Color
 import app.trees.nodes.RBNode
 import kotlin.random.Random
-import kotlin.test.BeforeTest
-import kotlin.test.Test
-import kotlin.test.assertFalse
-import kotlin.test.assertTrue
+import kotlin.test.*
 
 class RBTreeTest {
     companion object {
@@ -93,5 +90,11 @@ class RBTreeTest {
             tree.add(value)
             assertTrue(tree.contains(value))
         }
+    }
+
+    @Test
+    fun `deleting from empty tree without exceptions`() {
+        values.forEach { tree.delete(it) }
+        assertNull(tree.root, "Root should be null")
     }
 }

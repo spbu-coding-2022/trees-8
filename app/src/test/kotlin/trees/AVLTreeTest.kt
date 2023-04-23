@@ -8,10 +8,7 @@ package trees
 import app.trees.AVLTree
 import app.trees.nodes.AVLNode
 import kotlin.random.Random
-import kotlin.test.BeforeTest
-import kotlin.test.Test
-import kotlin.test.assertFalse
-import kotlin.test.assertTrue
+import kotlin.test.*
 
 
 class AVLTreeTest {
@@ -70,6 +67,13 @@ class AVLTreeTest {
         assertFalse(InvariantChecker.checkDataInNodes(tree.root), "Failed invariant, incorrect data")
         assertFalse(InvariantChecker.checkLinksToParent(tree.root), "Failed invariant, incorrect parent's link")
     }
+
+    @Test
+    fun `deleting from empty tree without exceptions`() {
+        values.forEach { tree.delete(it) }
+        assertNull(tree.root, "Root should be null")
+    }
+
 
     @Test
     fun `check for the presence of elements`() {
