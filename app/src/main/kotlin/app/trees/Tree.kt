@@ -3,10 +3,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-package app.trees.interfaces
+package app.trees
 
 interface Tree<T : Comparable<T>> {
     fun add(data: T)
-    fun contain(data: T): Boolean
+    fun contains(data: T): Boolean
     fun delete(data: T)
 }

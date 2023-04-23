@@ -3,7 +3,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-package app.trees.nodes
+package app.trees.rb
+
+import app.trees.abs.MyNode
 
 enum class Color {
     RED,

@@ -3,7 +3,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-package app.trees.nodes
+package app.trees.bs
+
+import app.trees.abs.MyNode
 
 data class BSNode<T : Comparable<T>>(
     override var data: T,
