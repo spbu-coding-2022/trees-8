@@ -16,14 +16,16 @@ plugins {
     id("org.jetbrains.kotlin.jvm") version "1.8.10"
     id("org.jetbrains.kotlin.plugin.noarg") version "1.8.20"
     kotlin("plugin.serialization") version "1.8.20"
+    id("org.jetbrains.compose") version "1.4.0"
     // Apply the application plugin to add support for building a CLI application in Java.
     application
 }
 
 
 repositories {
-    // Use Maven Central for resolving dependencies.
     mavenCentral()
+    maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+    google()
 }
 
 dependencies {
@@ -33,7 +35,9 @@ dependencies {
     implementation("org.neo4j:neo4j-ogm-core:4.0.5")
     runtimeOnly("org.neo4j:neo4j-ogm-bolt-driver:4.0.5")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
+    implementation(compose.desktop.currentOs)
 }
+
 
 tasks.jar {
     manifest.attributes["Main-Class"] = "app.AppKt"
