@@ -5,8 +5,8 @@
 
 package repo
 
-import app.trees.ABSTree
-import app.trees.nodes.MyNode
+import app.trees.abs.ABSTree
+import app.trees.abs.MyNode
 import repo.serialization.SerializableNode
 import repo.serialization.SerializableTree
 import repo.serialization.strategies.Serialization
@@ -16,6 +16,7 @@ abstract class Repository<T : Comparable<T>,
         TreeType : ABSTree<T, NodeType>>(
     protected val strategy: Serialization<T, NodeType, TreeType, *>
 ) {
+    // An extension function to convert a node of NodeType to a SerializableNode.
     protected fun NodeType.toSerializableNode(): SerializableNode {
         return SerializableNode(
             strategy.serializeValue(this.data),
@@ -25,7 +26,7 @@ abstract class Repository<T : Comparable<T>,
         )
     }
 
-
+    // This extension function is used to convert a TreeType object to a SerializableTree object.
     protected fun TreeType.toSerializableTree(name: String): SerializableTree {
         return SerializableTree(
             name = name,

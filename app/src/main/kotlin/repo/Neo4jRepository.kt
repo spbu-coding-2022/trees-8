@@ -5,8 +5,8 @@
 
 package repo
 
-import app.trees.ABSTree
-import app.trees.nodes.MyNode
+import app.trees.abs.ABSTree
+import app.trees.abs.MyNode
 import org.neo4j.ogm.config.Configuration
 import org.neo4j.ogm.cypher.ComparisonOperator
 import org.neo4j.ogm.cypher.Filter

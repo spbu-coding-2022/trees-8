@@ -5,8 +5,8 @@
 
 package repo.serialization.strategies
 
-import app.trees.ABSTree
-import app.trees.nodes.MyNode
+import app.trees.abs.ABSTree
+import app.trees.abs.MyNode
 import repo.serialization.Metadata
 import repo.serialization.SerializableNode
 import repo.serialization.SerializableValue

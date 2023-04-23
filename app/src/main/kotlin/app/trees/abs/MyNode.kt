@@ -3,12 +3,12 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-package app.trees.nodes/*
+package app.trees.abs/*
  * Copyright (c) 2023 teemEight
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import app.trees.interfaces.Node
+import app.trees.Node
 
 abstract class MyNode<T : Comparable<T>, Subtype : MyNode<T, Subtype>> : Node<T, Subtype> {
     abstract override var data: T
