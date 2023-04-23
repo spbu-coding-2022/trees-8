@@ -12,17 +12,15 @@ import org.neo4j.ogm.cypher.ComparisonOperator
 import org.neo4j.ogm.cypher.Filter
 import org.neo4j.ogm.cypher.Filters
 import org.neo4j.ogm.session.SessionFactory
+import repo.neo4jEntities.SerializableNodeEntity
+import repo.neo4jEntities.SerializableTreeEntity
 import repo.serialization.SerializableNode
 import repo.serialization.SerializableTree
-import repo.serialization.neo4jEntities.SerializableNodeEntity
-import repo.serialization.neo4jEntities.SerializableTreeEntity
 import repo.serialization.strategies.Serialization
 
-class Neo4jRepo<
-        T : Comparable<T>,
+class Neo4jRepo<T : Comparable<T>,
         NodeType : AbstractNode<T, NodeType>,
-        TreeType : AbstractTree<T, NodeType>,
-        >(
+        TreeType : AbstractTree<T, NodeType>>(
     strategy: Serialization<T, NodeType, TreeType, *>,
     configuration: Configuration
 ) : Repository<T, NodeType, TreeType>(strategy) {
@@ -38,12 +36,12 @@ class Neo4jRepo<
         )
     }
 
-    private fun SerializableTreeEntity.toTree(): SerializableTree {
-        return SerializableTree(
-            name,
-            typeOfTree,
-            root?.toSerializableNode(),
-        )
+    private fun SerializableNodeEntity.deserialize(parent: NodeType? = null): NodeType? {
+        val node = strategy.createNode(this.toSerializableNode())
+        node?.parent = parent
+        node?.left = left?.deserialize(node)
+        node?.right = right?.deserialize(node)
+        return node
     }
 
     private fun SerializableNode.toEntity(): SerializableNodeEntity {
@@ -52,6 +50,14 @@ class Neo4jRepo<
             metadata,
             left?.toEntity(),
             right?.toEntity(),
+        )
+    }
+
+    private fun SerializableTreeEntity.toTree(): SerializableTree {
+        return SerializableTree(
+            name,
+            typeOfTree,
+            root?.toSerializableNode(),
         )
     }
 
@@ -96,11 +102,7 @@ class Neo4jRepo<
         )
     }
 
-    private fun SerializableNodeEntity.deserialize(parent: NodeType? = null): NodeType? {
-        val node = strategy.createNode(this.toSerializableNode())
-        node?.parent = parent
-        node?.left = left?.deserialize(node)
-        node?.right = right?.deserialize(node)
-        return node
+    override fun getNames(): List<String> {
+        TODO("Not yet implemented")
     }
 }

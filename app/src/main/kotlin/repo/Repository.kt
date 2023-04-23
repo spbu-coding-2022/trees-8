@@ -37,4 +37,5 @@ abstract class Repository<T : Comparable<T>,
     abstract fun save(name: String, tree: TreeType)
     abstract fun loadByName(name: String): TreeType?
     abstract fun deleteByName(name: String)
+    abstract fun getNames(): List<String>
 }

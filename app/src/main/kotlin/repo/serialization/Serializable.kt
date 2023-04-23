@@ -9,8 +9,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 enum class TypeOfTree {
-    BINARY_SEARCH_TREE,
-    RED_BLACK_TREE,
+    BS_TREE,
+    RB_TREE,
     AVL_TREE
 }
 

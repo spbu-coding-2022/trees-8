@@ -13,14 +13,12 @@ import repo.serialization.SerializableValue
 import repo.serialization.TypeOfTree
 
 
-abstract class Serialization<
-        T : Comparable<T>,
+abstract class Serialization<T : Comparable<T>,
         NodeType : AbstractNode<T, NodeType>,
         TreeType : AbstractTree<T, NodeType>,
-        M,
-        >(
+        M>(
     val serializeValue: (T) -> SerializableValue,
-    val deserializeValue: (SerializableValue) -> T,
+    val deserializeValue: (SerializableValue) -> T
 ) {
     abstract val typeOfTree: TypeOfTree
     abstract fun createNode(node: SerializableNode?): NodeType?
