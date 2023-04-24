@@ -3,14 +3,14 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-package trees.nodes/*
+package app.trees.nodes/*
  * Copyright (c) 2023 teemEight
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import trees.interfaces.Node
+import app.trees.interfaces.Node
 
-abstract class MyNode<T : Comparable<T>, Subtype : MyNode<T, Subtype>> : Node<T, Subtype> {
+abstract class AbstractNode<T : Comparable<T>, Subtype : AbstractNode<T, Subtype>> : Node<T, Subtype> {
     abstract override var data: T
         internal set
     abstract override var left: Subtype?
@@ -29,9 +29,13 @@ abstract class MyNode<T : Comparable<T>, Subtype : MyNode<T, Subtype>> : Node<T,
     }
 
     override fun equals(other: Any?): Boolean {
-        if (other is MyNode<*, *>) {
+        if (other is AbstractNode<*, *>) {
             return data == other.data
         }
         return false
+    }
+
+    override fun toString(): String {
+        return "$data"
     }
 }

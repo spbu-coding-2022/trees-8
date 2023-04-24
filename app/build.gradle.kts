@@ -14,31 +14,41 @@
 plugins {
     // Apply the org.jetbrains.kotlin.jvm Plugin to add support for Kotlin.
     id("org.jetbrains.kotlin.jvm") version "1.8.10"
-
+    id("org.jetbrains.kotlin.plugin.noarg") version "1.8.20"
+    kotlin("plugin.serialization") version "1.8.20"
+    id("org.jetbrains.compose") version "1.4.0"
     // Apply the application plugin to add support for building a CLI application in Java.
     application
 }
 
+
 repositories {
-    // Use Maven Central for resolving dependencies.
     mavenCentral()
+    maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+    google()
 }
 
 dependencies {
-    // Use the Kotlin JUnit 5 integration.
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+    testImplementation(kotlin("test"))
+    testImplementation(platform("org.junit:junit-bom:5.9.2"))
+    testImplementation("org.junit.jupiter:junit-jupiter")
+    implementation("org.neo4j:neo4j-ogm-core:4.0.5")
+    runtimeOnly("org.neo4j:neo4j-ogm-bolt-driver:4.0.5")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
+    implementation("org.jetbrains.exposed", "exposed-core", "0.40.1")
+    implementation("org.jetbrains.exposed", "exposed-dao", "0.40.1")
+    implementation("org.jetbrains.exposed", "exposed-jdbc", "0.40.1")
+    implementation("org.xerial:sqlite-jdbc:3.40.1.0")
+    implementation(compose.desktop.currentOs)
+}
 
-    // Use the JUnit 5 integration.
-    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.9.2")
 
-    // This dependency is used by the application.
-    implementation("com.google.guava:guava:31.1-jre")
-    testImplementation("org.testng:testng:7.7.0")
-    testImplementation("org.testng:testng:7.7.0")
-    testImplementation("org.testng:testng:7.7.0")
-
-    // This dependency is needed to use JSon
-    implementation("com.google.code.gson:gson:2.8.9")
+tasks.jar {
+    manifest.attributes["Main-Class"] = "app.AppKt"
+}
+noArg {
+    annotation("org.neo4j.ogm.annotation.NodeEntity")
+    annotation("org.neo4j.ogm.annotation.RelationshipEntity")
 }
 
 application {

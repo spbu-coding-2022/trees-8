@@ -3,16 +3,15 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-package trees.trees
+package app.trees
 
-import trees.ABSTree
-import trees.nodes.Color
-import trees.nodes.RBNode
+import app.trees.nodes.Color
+import app.trees.nodes.RBNode
 
-class RBTree<T : Comparable<T>> : ABSTree<T, RBNode<T>>() {
+class RBTree<T : Comparable<T>> : AbstractTree<T, RBNode<T>>() {
     override fun add(data: T) {
         val node = RBNode(data)
-        root = simpleAdd(root, node)
+        root = balancedAdd(root, node)
         root = balanceAdd(node, root)
         root?.parent = null
         root?.color = Color.BLACK
@@ -20,7 +19,7 @@ class RBTree<T : Comparable<T>> : ABSTree<T, RBNode<T>>() {
 
     override fun delete(data: T) {
 
-        val node = simpleContains(root, RBNode(data)) ?: return
+        val node = contains(root, RBNode(data)) ?: return
         val next: RBNode<T>
 
         if ((node.left == null) && (node.right == null)) {
@@ -61,8 +60,8 @@ class RBTree<T : Comparable<T>> : ABSTree<T, RBNode<T>>() {
         }
     }
 
-    override fun contain(data: T): Boolean {
-        return (simpleContains(root, RBNode(data)) != null)
+    override fun contains(data: T): Boolean {
+        return (contains(root, RBNode(data)) != null)
     }
 
     private fun balanceDelete(node: RBNode<T>?): RBNode<T>? {
@@ -168,7 +167,7 @@ class RBTree<T : Comparable<T>> : ABSTree<T, RBNode<T>>() {
     }
 
     fun get(data: T): T? {
-        return simpleContains(root, RBNode(data))?.data
+        return contains(root, RBNode(data))?.data
     }
 
     private fun clearRotateLeft(node: RBNode<T>?, initRoot: RBNode<T>?): RBNode<T>? {
@@ -210,11 +209,15 @@ class RBTree<T : Comparable<T>> : ABSTree<T, RBNode<T>>() {
         return newRoot
     }
 
-    internal fun isBlack(node: RBNode<T>?): Boolean {
-        return ((node == null) || (node.color == Color.BLACK))
-    }
+    companion object {
+        @JvmStatic
+        internal fun <T : Comparable<T>> isBlack(node: RBNode<T>?): Boolean {
+            return ((node == null) || (node.color == Color.BLACK))
+        }
 
-    internal fun isRed(node: RBNode<T>?): Boolean {
-        return node?.color == Color.RED
+        @JvmStatic
+        internal fun <T : Comparable<T>> isRed(node: RBNode<T>?): Boolean {
+            return node?.color == Color.RED
+        }
     }
 }

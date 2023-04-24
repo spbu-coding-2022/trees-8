@@ -5,13 +5,11 @@
 
 package trees
 
-import trees.nodes.AVLNode
-import trees.trees.AVLTree
+import app.trees.AVLTree
+import app.trees.KeyValue
+import app.trees.nodes.AVLNode
 import kotlin.random.Random
-import kotlin.test.BeforeTest
-import kotlin.test.Test
-import kotlin.test.assertFalse
-import kotlin.test.assertTrue
+import kotlin.test.*
 
 
 class AVLTreeTest {
@@ -33,9 +31,12 @@ class AVLTreeTest {
     fun `check invariant while adding`() {
         for (value in values) {
             tree.add(value)
-            assertTrue(InvariantTest.checkHeightAVL(tree.root), "Failed invariant, incorrect height")
-            assertTrue(InvariantTest.checkDataInNodes(tree.root), "Failed invariant, incorrect data")
-            assertTrue(InvariantTest.checkLinksToParent(tree.root), "Failed invariant, incorrect parent's link")
+            assertTrue(InvariantChecker.checkHeightAVL(tree.root), "Failed invariant, incorrect height, value: $value")
+            assertTrue(InvariantChecker.checkDataInNodes(tree.root), "Failed invariant, incorrect data, value: $value")
+            assertTrue(
+                InvariantChecker.checkLinksToParent(tree.root),
+                "Failed invariant, incorrect parent's link, value: $value"
+            )
         }
     }
 
@@ -47,9 +48,12 @@ class AVLTreeTest {
         values.shuffle(randomizer)
         for (value in values) {
             tree.delete(value)
-            assertTrue(InvariantTest.checkHeightAVL(tree.root), "Failed invariant, incorrect height")
-            assertTrue(InvariantTest.checkDataInNodes(tree.root), "Failed invariant, incorrect data")
-            assertTrue(InvariantTest.checkLinksToParent(tree.root), "Failed invariant, incorrect parent's link")
+            assertTrue(InvariantChecker.checkHeightAVL(tree.root), "Failed invariant, incorrect height, value: $value")
+            assertTrue(InvariantChecker.checkDataInNodes(tree.root), "Failed invariant, incorrect data, value: $value")
+            assertTrue(
+                InvariantChecker.checkLinksToParent(tree.root),
+                "Failed invariant, incorrect parent's link, value: $value"
+            )
         }
     }
 
@@ -60,16 +64,37 @@ class AVLTreeTest {
         tree.add(5)
         tree.root?.left?.left = AVLNode(100)
         tree.root?.left?.left?.left = AVLNode(150)
-        assertFalse(InvariantTest.checkHeightAVL(tree.root))
-        assertFalse(InvariantTest.checkDataInNodes(tree.root), "Failed invariant, incorrect data")
-        assertFalse(InvariantTest.checkLinksToParent(tree.root), "Failed invariant, incorrect parent's link")
+        assertFalse(InvariantChecker.checkHeightAVL(tree.root))
+        assertFalse(InvariantChecker.checkDataInNodes(tree.root), "Failed invariant, incorrect data")
+        assertFalse(InvariantChecker.checkLinksToParent(tree.root), "Failed invariant, incorrect parent's link")
     }
+
+    @Test
+    fun `check deleting from empty tree without exceptions`() {
+        values.forEach { tree.delete(it) }
+        assertNull(tree.root, "Root should be null")
+    }
+
 
     @Test
     fun `check for the presence of elements`() {
         for (value in values) {
             tree.add(value)
-            assertTrue(tree.contain(value))
+            assertTrue(tree.contains(value))
+        }
+    }
+
+    @Test
+    fun `check using KeyValue in data`() {
+        val newTree = AVLTree<KeyValue<String, Int>>()
+        val keyValue = values.map { KeyValue(it.toString(), it) }
+        for (stringIntKeyValue in keyValue) {
+            newTree.add(stringIntKeyValue)
+            assertEquals(
+                stringIntKeyValue.value,
+                newTree.get(KeyValue(stringIntKeyValue.key, null))?.value,
+                "Values should be equals"
+            )
         }
     }
 }

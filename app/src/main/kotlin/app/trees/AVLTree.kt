@@ -3,25 +3,24 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-package trees.trees
+package app.trees
 
-import trees.ABSTree
-import trees.nodes.AVLNode
+import app.trees.nodes.AVLNode
 
-class AVLTree<T : Comparable<T>> : ABSTree<T, AVLNode<T>>() {
+class AVLTree<T : Comparable<T>> : AbstractTree<T, AVLNode<T>>() {
 
     override fun add(data: T) {
-        root = simpleAdd(root, AVLNode(data))
+        root = balancedAdd(root, AVLNode(data))
         root?.updateHeight()
         root?.parent = null
     }
 
-    override fun contain(data: T): Boolean {
-        return (simpleContains(root, AVLNode(data)) != null)
+    override fun contains(data: T): Boolean {
+        return (contains(root, AVLNode(data)) != null)
     }
 
     override fun delete(data: T) {
-        root = simpleDelete(root, AVLNode(data))
+        root = balancedDelete(root, AVLNode(data))
         root?.updateHeight()
         root?.parent = null
     }
@@ -56,7 +55,7 @@ class AVLTree<T : Comparable<T>> : ABSTree<T, AVLNode<T>>() {
     }
 
     fun get(data: T): T? {
-        return simpleContains(root, AVLNode(data))?.data
+        return contains(root, AVLNode(data))?.data
     }
 
     private fun updateChildrenHeight(node: AVLNode<T>?) {

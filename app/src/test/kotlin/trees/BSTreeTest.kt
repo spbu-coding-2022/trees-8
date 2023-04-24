@@ -5,13 +5,11 @@
 
 package trees
 
-import trees.nodes.BSNode
-import trees.trees.BSTree
+import app.trees.BSTree
+import app.trees.KeyValue
+import app.trees.nodes.BSNode
 import kotlin.random.Random
-import kotlin.test.BeforeTest
-import kotlin.test.Test
-import kotlin.test.assertFalse
-import kotlin.test.assertTrue
+import kotlin.test.*
 
 
 class BSTreeTest {
@@ -33,8 +31,11 @@ class BSTreeTest {
     fun `check invariant while adding`() {
         for (value in values) {
             tree.add(value)
-            assertTrue(InvariantTest.checkDataInNodes(tree.root), "Failed invariant, incorrect data")
-            assertTrue(InvariantTest.checkLinksToParent(tree.root), "Failed invariant, incorrect parent's link")
+            assertTrue(InvariantChecker.checkDataInNodes(tree.root), "Failed invariant, incorrect data, value: $value")
+            assertTrue(
+                InvariantChecker.checkLinksToParent(tree.root),
+                "Failed invariant, incorrect parent's link, value: $value"
+            )
         }
     }
 
@@ -46,8 +47,11 @@ class BSTreeTest {
         values.shuffle(randomizer)
         for (value in values) {
             tree.delete(value)
-            assertTrue(InvariantTest.checkDataInNodes(tree.root), "Failed invariant, incorrect data")
-            assertTrue(InvariantTest.checkLinksToParent(tree.root), "Failed invariant, incorrect parent's link")
+            assertTrue(InvariantChecker.checkDataInNodes(tree.root), "Failed invariant, incorrect data, value: $value")
+            assertTrue(
+                InvariantChecker.checkLinksToParent(tree.root),
+                "Failed invariant, incorrect parent's link, value: $value"
+            )
         }
     }
 
@@ -56,15 +60,35 @@ class BSTreeTest {
         tree.add(10)
         tree.root?.left = BSNode(15)
         tree.root?.right = BSNode(5)
-        assertFalse(InvariantTest.checkDataInNodes(tree.root), "Failed invariant, incorrect data")
-        assertFalse(InvariantTest.checkLinksToParent(tree.root), "Failed invariant, incorrect parent's link")
+        assertFalse(InvariantChecker.checkDataInNodes(tree.root), "Failed invariant, incorrect data")
+        assertFalse(InvariantChecker.checkLinksToParent(tree.root), "Failed invariant, incorrect parent's link")
     }
 
     @Test
     fun `check for the presence of elements`() {
         for (value in values) {
             tree.add(value)
-            assertTrue(tree.contain(value))
+            assertTrue(tree.contains(value))
+        }
+    }
+
+    @Test
+    fun `check deleting from empty tree without exceptions`() {
+        values.forEach { tree.delete(it) }
+        assertNull(tree.root, "Root should be null")
+    }
+
+    @Test
+    fun `check using KeyValue in data`() {
+        val newTree = BSTree<KeyValue<String, Int>>()
+        val keyValue = values.map { KeyValue(it.toString(), it) }
+        for (stringIntKeyValue in keyValue) {
+            newTree.add(stringIntKeyValue)
+            assertEquals(
+                stringIntKeyValue.value,
+                newTree.get(KeyValue(stringIntKeyValue.key, null))?.value,
+                "Values should be equals"
+            )
         }
     }
 }
