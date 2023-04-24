@@ -12,8 +12,8 @@ import org.neo4j.ogm.cypher.ComparisonOperator
 import org.neo4j.ogm.cypher.Filter
 import org.neo4j.ogm.cypher.Filters
 import org.neo4j.ogm.session.SessionFactory
-import repo.neo4jEntities.SerializableNodeEntity
-import repo.neo4jEntities.SerializableTreeEntity
+import repo.neo4jEntities.Neo4jNodeEntity
+import repo.neo4jEntities.Neo4jTreeEntity
 import repo.serialization.SerializableNode
 import repo.serialization.SerializableTree
 import repo.serialization.strategies.Serialization
@@ -27,7 +27,7 @@ class Neo4jRepo<T : Comparable<T>,
     private val sessionFactory = SessionFactory(configuration, "repo")
     private val session = sessionFactory.openSession()
 
-    private fun SerializableNodeEntity.toSerializableNode(): SerializableNode {
+    private fun Neo4jNodeEntity.toSerializableNode(): SerializableNode {
         return SerializableNode(
             data,
             metadata,
@@ -36,7 +36,7 @@ class Neo4jRepo<T : Comparable<T>,
         )
     }
 
-    private fun SerializableNodeEntity.deserialize(parent: NodeType? = null): NodeType? {
+    private fun Neo4jNodeEntity.deserialize(parent: NodeType? = null): NodeType? {
         val node = strategy.createNode(this.toSerializableNode())
         node?.parent = parent
         node?.left = left?.deserialize(node)
@@ -44,8 +44,8 @@ class Neo4jRepo<T : Comparable<T>,
         return node
     }
 
-    private fun SerializableNode.toEntity(): SerializableNodeEntity {
-        return SerializableNodeEntity(
+    private fun SerializableNode.toEntity(): Neo4jNodeEntity {
+        return Neo4jNodeEntity(
             data,
             metadata,
             left?.toEntity(),
@@ -53,7 +53,7 @@ class Neo4jRepo<T : Comparable<T>,
         )
     }
 
-    private fun SerializableTreeEntity.toTree(): SerializableTree {
+    private fun Neo4jTreeEntity.toTree(): SerializableTree {
         return SerializableTree(
             name,
             typeOfTree,
@@ -61,8 +61,8 @@ class Neo4jRepo<T : Comparable<T>,
         )
     }
 
-    private fun SerializableTree.toEntity(): SerializableTreeEntity {
-        return SerializableTreeEntity(
+    private fun SerializableTree.toEntity(): Neo4jTreeEntity {
+        return Neo4jTreeEntity(
             name,
             typeOfTree,
             root?.toEntity(),
@@ -76,7 +76,7 @@ class Neo4jRepo<T : Comparable<T>,
     }
 
     private fun findByVerboseName(name: String) = session.loadAll(
-        SerializableTreeEntity::class.java,
+        Neo4jTreeEntity::class.java,
         Filters().and(
             Filter("name", ComparisonOperator.EQUALS, name)
         ).and(
@@ -96,7 +96,7 @@ class Neo4jRepo<T : Comparable<T>,
     override fun deleteByName(name: String) {
         session.query(
             "MATCH toDelete=(" +
-                    "t:SerializableTreeEntity {typeOfTree: \$typeOfTree, name : \$name}" +
+                    "t:Tree {typeOfTree: \$typeOfTree, name : \$name}" +
                     ")-[*0..]->() DETACH DELETE toDelete",
             mapOf("typeOfTree" to strategy.typeOfTree, "name" to name)
         )

@@ -3,43 +3,33 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.Text
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.ExperimentalComposeUiApi
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.PointerEventType
-import androidx.compose.ui.input.pointer.onPointerEvent
-import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.singleWindowApplication
+import app.trees.AVLTree
+import org.neo4j.ogm.config.Configuration
+import repo.Neo4jRepo
+import repo.serialization.SerializableValue
+import repo.serialization.strategies.AVLStrategy
+import kotlin.random.Random
 
-@OptIn(ExperimentalComposeUiApi::class)
-fun main() = singleWindowApplication {
-    Column(
-        Modifier.background(Color.White),
-        verticalArrangement = Arrangement.spacedBy(1.dp)
-    ) {
-        repeat(10) { index ->
-            var active by remember { mutableStateOf(false) }
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(color = if (active) Color.Green else Color.White)
-                    .onPointerEvent(PointerEventType.Enter) { active = true }
-                    .onPointerEvent(PointerEventType.Exit) { active = false },
-                fontSize = 30.sp,
-                fontStyle = if (active) FontStyle.Italic else FontStyle.Normal,
-                text = "Item $index"
-            )
-        }
+fun main() {
+    val tree = AVLTree<Int>()
+    val randomizer = Random(40)
+    val lst = List(10) { randomizer.nextInt(100) }
+    lst.forEach { tree.add(it) }
+    val conf = Configuration.Builder()
+        .uri("neo4j://localhost")
+        .credentials("neo4j", "359F35QD88glhf.")
+        .build()
+
+    fun serializeInt(data: Int): SerializableValue {
+        return SerializableValue(data.toString())
     }
+
+    fun deserializeInt(data: SerializableValue): Int {
+        return data.value.toInt()
+    }
+
+    val avlRepo = Neo4jRepo(AVLStrategy(::serializeInt, ::deserializeInt), conf)
+    avlRepo.save("main", tree)
+    val testTree = avlRepo.loadByName("main")
+    println(testTree.preOrder())
 }

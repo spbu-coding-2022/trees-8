@@ -10,7 +10,7 @@ import repo.serialization.Metadata
 import repo.serialization.SerializableValue
 
 @NodeEntity("Node")
-class SerializableNodeEntity(
+class Neo4jNodeEntity(
     @Property("data")
     var data: SerializableValue,
 
@@ -18,10 +18,10 @@ class SerializableNodeEntity(
     var metadata: Metadata,
 
     @Relationship(type = "LEFT", direction = Relationship.Direction.OUTGOING)
-    var left: SerializableNodeEntity? = null,
+    var left: Neo4jNodeEntity? = null,
 
     @Relationship(type = "RIGHT", direction = Relationship.Direction.OUTGOING)
-    var right: SerializableNodeEntity? = null,
+    var right: Neo4jNodeEntity? = null,
 ) {
     @Id
     @GeneratedValue

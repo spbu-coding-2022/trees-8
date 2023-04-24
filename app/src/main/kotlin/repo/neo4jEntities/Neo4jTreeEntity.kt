@@ -9,7 +9,7 @@ import org.neo4j.ogm.annotation.*
 import repo.serialization.TypeOfTree
 
 @NodeEntity("Tree")
-class SerializableTreeEntity(
+class Neo4jTreeEntity(
     @Property("name")
     var name: String,
 
@@ -17,7 +17,7 @@ class SerializableTreeEntity(
     var typeOfTree: TypeOfTree,
 
     @Relationship(type = "ROOT", direction = Relationship.Direction.OUTGOING)
-    var root: SerializableNodeEntity?,
+    var root: Neo4jNodeEntity?,
 ) {
 
     @Id
