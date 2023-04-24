@@ -26,6 +26,7 @@ class JsonRepository<T : Comparable<T>,
     strategy: Serialization<T, NodeType, TreeType, *>,
     dirPath: String
 ) : Repository<T, NodeType, TreeType>(strategy) {
+
     private val dirPath = "$dirPath/${strategy.typeOfTree.name.lowercase()}"
 
     private fun JsonNode.toSerializableNode(): SerializableNode {
@@ -57,6 +58,7 @@ class JsonRepository<T : Comparable<T>,
     private fun SerializableTree.toJsonTree(): JsonTree {
         return JsonTree(
             name,
+            typeOfTree,
             root?.toJsonNode()
         )
     }

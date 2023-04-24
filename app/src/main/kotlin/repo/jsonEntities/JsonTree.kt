@@ -5,9 +5,11 @@
 
 
 import kotlinx.serialization.Serializable
+import repo.serialization.TypeOfTree
 
 @Serializable
 data class JsonTree(
     val name: String,
+    val typeOfTree: TypeOfTree,
     val root: JsonNode?
 )
