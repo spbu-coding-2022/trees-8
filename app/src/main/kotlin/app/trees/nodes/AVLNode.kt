@@ -5,7 +5,7 @@
 
 package app.trees.nodes
 
-data class AVLNode<T : Comparable<T>>(
+class AVLNode<T : Comparable<T>>(
     override var data: T,
     internal var height: Int = 1,
     override var left: AVLNode<T>? = null,
