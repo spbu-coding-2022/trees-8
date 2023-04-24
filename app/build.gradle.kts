@@ -35,6 +35,10 @@ dependencies {
     implementation("org.neo4j:neo4j-ogm-core:4.0.5")
     runtimeOnly("org.neo4j:neo4j-ogm-bolt-driver:4.0.5")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
+    implementation("org.jetbrains.exposed", "exposed-core", "0.40.1")
+    implementation("org.jetbrains.exposed", "exposed-dao", "0.40.1")
+    implementation("org.jetbrains.exposed", "exposed-jdbc", "0.40.1")
+    implementation("org.xerial:sqlite-jdbc:3.40.1.0")
     implementation(compose.desktop.currentOs)
 }
 
