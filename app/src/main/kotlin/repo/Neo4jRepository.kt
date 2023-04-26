@@ -102,7 +102,9 @@ class Neo4jRepo<T : Comparable<T>,
         )
     }
 
-    override fun getNames(): List<String> {
-        TODO("Not yet implemented")
-    }
+    override fun getNames(): List<String> = session.loadAll(
+        Neo4jTreeEntity::class.java,
+        Filter("typeOfTree", ComparisonOperator.EQUALS, strategy.typeOfTree),
+        0
+    ).map(Neo4jTreeEntity::name)
 }
