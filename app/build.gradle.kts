@@ -39,7 +39,9 @@ dependencies {
     implementation("org.jetbrains.exposed", "exposed-dao", "0.40.1")
     implementation("org.jetbrains.exposed", "exposed-jdbc", "0.40.1")
     implementation("org.xerial:sqlite-jdbc:3.40.1.0")
+    implementation("com.google.code.gson:gson:2.10.1")
     implementation(compose.desktop.currentOs)
+    implementation(compose.material3)
 }
 
 
