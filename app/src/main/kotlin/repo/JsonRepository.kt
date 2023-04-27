@@ -24,7 +24,8 @@ class JsonRepository<T : Comparable<T>,
         TreeType : AbstractTree<T, NodeType>>
     (
     strategy: Serialization<T, NodeType, TreeType, *>,
-    dirPath: String
+    dirPath: String,
+    private val filename: String,
 ) : Repository<T, NodeType, TreeType>(strategy) {
 
     private val dirPath = "$dirPath/${strategy.typeOfTree.name.lowercase()}"
@@ -85,7 +86,7 @@ class JsonRepository<T : Comparable<T>,
         val jsonTree = tree.toSerializableTree(name).toJsonTree()
 
         File(dirPath).mkdirs()
-        File(dirPath, "${name.hashCode()}.json").run {
+        File(dirPath, filename).run {
             createNewFile()
             writeText(Json.encodeToString(jsonTree))
         }
