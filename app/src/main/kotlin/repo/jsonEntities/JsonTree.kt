@@ -7,9 +7,14 @@
 import kotlinx.serialization.Serializable
 import repo.serialization.TypeOfTree
 
+//Describes the "JsonTree" object - this is the tree
+// that will be serialized and stored in JSON format
 @Serializable
 data class JsonTree(
+    //a string that contains the name of the tree.
     val name: String,
+    //contains a tree type, which can be one of the "TypeOfTree" enums.
     val typeOfTree: TypeOfTree,
+    //This is a reference to the root node of the tree, which can either be a "JsonNode" object
     val root: JsonNode?
 )

@@ -18,17 +18,20 @@ import repo.serialization.strategies.Serialization
 import java.io.File
 import java.io.FileNotFoundException
 
-
+//creates a new JsonRepository object with the given strategy and dirPath. strategy
 class JsonRepository<T : Comparable<T>,
         NodeType : AbstractNode<T, NodeType>,
         TreeType : AbstractTree<T, NodeType>>
     (
+    //serialization strategy for working with trees and nodes.
     strategy: Serialization<T, NodeType, TreeType, *>,
+    //путь к директории, в которой будут храниться файлы деревьев в формате JSON.
     dirPath: String
 ) : Repository<T, NodeType, TreeType>(strategy) {
 
     private val dirPath = "$dirPath/${strategy.typeOfTree.name.lowercase()}"
 
+    //function to convert JsonNode to SerializableNode.
     private fun JsonNode.toSerializableNode(): SerializableNode {
         return SerializableNode(
             data,
@@ -38,6 +41,7 @@ class JsonRepository<T : Comparable<T>,
         )
     }
 
+    //a function to deserialize a JsonNode into a tree node
     private fun JsonNode.deserialize(parent: NodeType? = null): NodeType? {
         val node = strategy.createNode(this.toSerializableNode())
         node?.parent = parent
@@ -46,6 +50,7 @@ class JsonRepository<T : Comparable<T>,
         return node
     }
 
+    //function to convert SerializableNode to JsonNode.
     private fun SerializableNode.toJsonNode(): JsonNode {
         return JsonNode(
             data,
@@ -54,7 +59,7 @@ class JsonRepository<T : Comparable<T>,
             right?.toJsonNode()
         )
     }
-
+    //function to convert SerializableTree to JsonTree
     private fun SerializableTree.toJsonTree(): JsonTree {
         return JsonTree(
             name,
@@ -63,11 +68,13 @@ class JsonRepository<T : Comparable<T>,
         )
     }
 
+    //method for getting a list of tree names.
     override fun getNames(): List<String> =
         File(dirPath).listFiles()?.map {
             Json.decodeFromString<JsonTree>(it.readText()).name
         } ?: listOf()
 
+    //method to load a tree by name
     override fun loadByName(name: String): TreeType? {
         val json = try {
             File(dirPath, "${name.hashCode()}.json").readText()
@@ -80,7 +87,7 @@ class JsonRepository<T : Comparable<T>,
             root = jsonTree.root?.deserialize()
         }
     }
-
+    //method to save tree by name
     override fun save(name: String, tree: TreeType) {
         val jsonTree = tree.toSerializableTree(name).toJsonTree()
 
@@ -90,7 +97,7 @@ class JsonRepository<T : Comparable<T>,
             writeText(Json.encodeToString(jsonTree))
         }
     }
-
+    //a method for deleting a tree by name
     override fun deleteByName(name: String) {
         File(dirPath, "${name.hashCode()}.json").delete()
     }
