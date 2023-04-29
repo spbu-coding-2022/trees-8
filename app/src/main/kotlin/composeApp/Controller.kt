@@ -5,16 +5,11 @@
 
 import androidx.compose.ui.awt.ComposeWindow
 import com.google.gson.Gson
-import repo.JsonRepository
-import repo.serialization.SerializableValue
-import repo.serialization.strategies.AVLStrategy
+import repository.JsonRepository
+import repository.serialization.SerializableValue
+import repository.serialization.strategies.AVLStrategy
 import java.awt.FileDialog
 import java.io.File
-
-/*
- * Copyright (c) 2023 teemEight
- * SPDX-License-Identifier: Apache-2.0
- */
 
 class Controller {
     fun openFileDialog(
@@ -40,7 +35,7 @@ class Controller {
             return gson.fromJson(string.value, DrawableNode::class.java)!!
         }
 
-        val repo = JsonRepository(AVLStrategy(::drawableNodeToString, ::jsonStringToDrawableNode), dirPath, filename)
+        val repo = JsonRepository(AVLStrategy(::drawableNodeToString, ::jsonStringToDrawableNode), dirPath)
         return repo.getNames()
     }
 

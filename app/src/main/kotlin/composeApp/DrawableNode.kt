@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import app.trees.KeyValue
+import trees.KeyValue
 
 class DrawableNode(
     var data: KeyValue<Int, String>,
