@@ -25,8 +25,8 @@ or `neo4j` databases.
 - [x] Added tests
 - Storing with:
     - [x] Neo4j
-    - [ ] Sqlite
-    - [ ] json
+    - [x] Sqlite
+    - [x] json
 - [ ] GUI
 
 ## Building
