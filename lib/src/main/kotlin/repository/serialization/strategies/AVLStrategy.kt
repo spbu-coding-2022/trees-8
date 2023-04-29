@@ -18,6 +18,7 @@ class AVLStrategy<T : Comparable<T>>(
 ) : Serialization<T, AVLNode<T>, AVLTree<T>, Int>(serializeData, deserializeData) {
     override val typeOfTree: TypeOfTree = TypeOfTree.AVL_TREE
 
+    //method that creates an AVL tree node from the passed SerializableNode, which was obtained as a result of serialization.
     override fun createNode(node: SerializableNode?): AVLNode<T>? = node?.let {
         AVLNode(
             data = deserializeValue(node.data),
@@ -27,9 +28,12 @@ class AVLStrategy<T : Comparable<T>>(
         )
     }
 
+    //method that deserializes the node's metadata (in this case, the node's height). Returns the deserialized metadata.
     override fun deserializeMetadata(metadata: Metadata) = metadata.value.toInt()
 
+    //method that serializes the node's metadata (in this case, the node's height). Returns the serialized metadata.
     override fun serializeMetadata(node: AVLNode<T>) = Metadata(node.height.toString())
 
+    //method that creates an AVL tree. Returns a new AVL tree of type AVLTree<T>.
     override fun createTree() = AVLTree<T>()
 }

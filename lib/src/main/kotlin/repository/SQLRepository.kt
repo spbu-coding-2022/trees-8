@@ -5,6 +5,10 @@
 
 package repository
 
+import NodesTable
+import SQLNodeEntity
+import SQLTreeEntity
+import TreesTable
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
@@ -16,10 +20,6 @@ import repository.serialization.SerializableNode
 import repository.serialization.SerializableTree
 import repository.serialization.SerializableValue
 import repository.serialization.strategies.Serialization
-import repository.sqliteEntities.NodesTable
-import repository.sqliteEntities.SQLNodeEntity
-import repository.sqliteEntities.SQLTreeEntity
-import repository.sqliteEntities.TreesTable
 import trees.AbstractTree
 import trees.nodes.AbstractNode
 
@@ -32,6 +32,7 @@ class SQLRepository<T : Comparable<T>,
 
     private val typeOfTree = strategy.typeOfTree.toString()
 
+    //Initializes the database tables for storing trees and nodes.
     init {
         transaction(db) {
             SchemaUtils.create(TreesTable)
@@ -39,6 +40,7 @@ class SQLRepository<T : Comparable<T>,
         }
     }
 
+    //Converts an instance of SQLNodeEntity to a SerializableNode object using the serialization strategy.
     private fun SQLNodeEntity.toSerializableNode(): SerializableNode {
         return SerializableNode(
             SerializableValue(data),
@@ -48,6 +50,7 @@ class SQLRepository<T : Comparable<T>,
         )
     }
 
+    //Deserializes an instance of SQLNodeEntity to a NodeType object using the serialization strategy.
     private fun SQLNodeEntity.deserialize(parent: NodeType? = null): NodeType? {
         val node = strategy.createNode(this.toSerializableNode())
         node?.parent = parent
@@ -56,6 +59,7 @@ class SQLRepository<T : Comparable<T>,
         return node
     }
 
+    //Converts a SerializableNode object to an instance of SQLNodeEntity using the serialization strategy.
     private fun SerializableNode.toEntity(tree: SQLTreeEntity): SQLNodeEntity = SQLNodeEntity.new {
         this@new.data = this@toEntity.data.value
         this@new.metadata = this@toEntity.metadata.value
@@ -64,6 +68,7 @@ class SQLRepository<T : Comparable<T>,
         this.tree = tree
     }
 
+    //Converts a SerializableTree object to an instance of SQLTreeEntity.
     private fun SerializableTree.toEntity(): SQLTreeEntity {
         return SQLTreeEntity.new {
             this.name = this@toEntity.name
@@ -71,13 +76,14 @@ class SQLRepository<T : Comparable<T>,
         }
     }
 
+    //Saves a TreeType object to the database with a given name by deleting any existing tree with the same name and creating a new one.
     override fun save(name: String, tree: TreeType): Unit = transaction(db) {
         deleteByName(name)
         val entityTree = tree.toSerializableTree(name).toEntity()
         entityTree.root = tree.root?.toSerializableNode()?.toEntity(entityTree)
     }
 
-
+    //Loads a TreeType object from the database by name, if it exists.
     override fun loadByName(name: String): TreeType? = transaction(db) {
         SQLTreeEntity.find(
             TreesTable.typeOfTree eq typeOfTree and (TreesTable.name eq name)
@@ -86,6 +92,7 @@ class SQLRepository<T : Comparable<T>,
         }
     }
 
+    //Deletes a tree from the database by name.
     override fun deleteByName(name: String): Unit = transaction(db) {
         val treeId = SQLTreeEntity.find(
             TreesTable.typeOfTree eq strategy.typeOfTree.toString() and (TreesTable.name eq name)
@@ -98,6 +105,7 @@ class SQLRepository<T : Comparable<T>,
         }
     }
 
+    //Returns a list of names of all the trees in the database.
     override fun getNames(): List<String> = transaction(db) {
         SQLTreeEntity.find(TreesTable.typeOfTree eq typeOfTree).map(SQLTreeEntity::name)
     }
