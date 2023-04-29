@@ -9,14 +9,24 @@ import trees.nodes.Color
 import trees.nodes.RBNode
 
 class RBTree<T : Comparable<T>> : AbstractTree<T, RBNode<T>>() {
+    //This function adds a new node containing the provided data to the tree while ensuring
+    //that it maintains the Red-Black tree properties.
+    //It first calls balancedAdd to add the node,
+    //and then balanceAfterAdd to perform any necessary rotations and color changes.
+    //It then sets the root's parent to null and the root's color to black.
     override fun add(data: T) {
         val node = RBNode(data)
         root = balancedAdd(root, node)
-        root = balanceAdd(node, root)
+        root = balanceAfterAdd(node, root)
         root?.parent = null
         root?.color = Color.BLACK
     }
 
+    //This function deletes a node containing the provided data from the tree while ensuring
+    //that it maintains the Red-Black tree properties. If the node has no children, it simply deletes it.
+    // If it has one child, it replaces it with its child. If it has two children,
+    // it replaces it with the next node in the in-order traversal (i.e., the node with the smallest data value in its right subtree),
+    // and then deletes that node. It then calls balanceAfterDelete to perform any necessary rotations and color changes.
     override fun delete(data: T) {
 
         val node = contains(root, RBNode(data)) ?: return
@@ -31,7 +41,7 @@ class RBTree<T : Comparable<T>> : AbstractTree<T, RBNode<T>>() {
                     replaceChild(node, null)
                 } else {
                     // delete black node without children
-                    root = balanceDelete(node)
+                    root = balanceAfterDelete(node)
                     replaceChild(node, null)
                 }
             }
@@ -50,7 +60,7 @@ class RBTree<T : Comparable<T>> : AbstractTree<T, RBNode<T>>() {
                 replaceChild(next, null)
             } else {
                 if (next.right == null) {
-                    root = balanceDelete(next)
+                    root = balanceAfterDelete(next)
                     replaceChild(next, null)
                 } else {
                     // delete for black node with one child
@@ -60,11 +70,15 @@ class RBTree<T : Comparable<T>> : AbstractTree<T, RBNode<T>>() {
         }
     }
 
+    //method that checks if the given value is contained
     override fun contains(data: T): Boolean {
         return (contains(root, RBNode(data)) != null)
     }
 
-    private fun balanceDelete(node: RBNode<T>?): RBNode<T>? {
+    //This function performs any necessary rotations and color changes to ensure that the tree maintains
+    //the Red-Black tree properties after a node has been deleted from the tree. It takes as input the node
+    //that was just deleted, and returns the new root node of the tree.
+    private fun balanceAfterDelete(node: RBNode<T>?): RBNode<T>? {
         var newRoot = root
         var current = node
 
@@ -123,7 +137,10 @@ class RBTree<T : Comparable<T>> : AbstractTree<T, RBNode<T>>() {
         return newRoot
     }
 
-    private fun balanceAdd(initNode: RBNode<T>?, subRoot: RBNode<T>?): RBNode<T>? {
+    //This function performs any necessary rotations and color changes to ensure that
+    //the tree maintains the Red-Black tree properties after a node has been added to the tree.
+    //It takes as input the node that was just ad
+    private fun balanceAfterAdd(initNode: RBNode<T>?, subRoot: RBNode<T>?): RBNode<T>? {
         if (initNode?.parent == null) return subRoot
         var newRoot = subRoot
         var current = initNode
@@ -166,10 +183,12 @@ class RBTree<T : Comparable<T>> : AbstractTree<T, RBNode<T>>() {
         return newRoot ?: root
     }
 
+    //method that returns the value of the node with the given value.
     fun get(data: T): T? {
         return contains(root, RBNode(data))?.data
     }
 
+    //This function performs a left rotation on the subtree rooted at the provided node, and returns the new root node of the subtree.
     private fun clearRotateLeft(node: RBNode<T>?, initRoot: RBNode<T>?): RBNode<T>? {
         if (node?.right == null) return null
 
@@ -191,6 +210,7 @@ class RBTree<T : Comparable<T>> : AbstractTree<T, RBNode<T>>() {
         return newRoot
     }
 
+    //This function performs a right rotation on the subtree rooted at the provided node, and returns the new root node of the subtree.
     private fun clearRotateRight(node: RBNode<T>?, root: RBNode<T>?): RBNode<T>? {
         if (node?.left == null) return null
 
@@ -210,11 +230,13 @@ class RBTree<T : Comparable<T>> : AbstractTree<T, RBNode<T>>() {
     }
 
     companion object {
+        //This function returns a Boolean indicating whether the provided node is black. If the node is null, it returns true.
         @JvmStatic
         internal fun <T : Comparable<T>> isBlack(node: RBNode<T>?): Boolean {
             return ((node == null) || (node.color == Color.BLACK))
         }
 
+        //This function returns a Boolean indicating whether the provided node is red. If the node is null, it returns false.
         @JvmStatic
         internal fun <T : Comparable<T>> isRed(node: RBNode<T>?): Boolean {
             return node?.color == Color.RED

@@ -8,23 +8,26 @@ package trees
 import trees.nodes.AVLNode
 
 class AVLTree<T : Comparable<T>> : AbstractTree<T, AVLNode<T>>() {
-
+    //adds a new node to the AVL tree.
     override fun add(data: T) {
         root = balancedAdd(root, AVLNode(data))
         root?.updateHeight()
         root?.parent = null
     }
 
+    //checks if the given value is contained in the AVL tree.
     override fun contains(data: T): Boolean {
         return (contains(root, AVLNode(data)) != null)
     }
 
+    //removes the node with the given value from the AVL tree.
     override fun delete(data: T) {
         root = balancedDelete(root, AVLNode(data))
         root?.updateHeight()
         root?.parent = null
     }
 
+    //method that balances the tree starting from the given node.
     override fun balance(initNode: AVLNode<T>?): AVLNode<T>? {
         if (initNode == null) {
             return null
@@ -54,10 +57,12 @@ class AVLTree<T : Comparable<T>> : AbstractTree<T, AVLNode<T>>() {
         return initNode
     }
 
+    //method that returns the value of the node with the given value.
     fun get(data: T): T? {
         return contains(root, AVLNode(data))?.data
     }
 
+    //helper method of the AVLTree class that updates the height of the passed node's child nodes.
     private fun updateChildrenHeight(node: AVLNode<T>?) {
         node?.left?.updateHeight()
         node?.right?.updateHeight()

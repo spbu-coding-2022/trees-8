@@ -12,10 +12,16 @@ abstract class AbstractTree<T : Comparable<T>, NodeType : AbstractNode<T, NodeTy
     var root: NodeType? = null
         internal set
 
+    //This function is called after a node has been inserted or removed from the tree,
+    // and is used to balance the tree if necessary.
+    // The default implementation simply returns the starting node without performing any balancing.
     protected open fun balance(initNode: NodeType?): NodeType? {
         return initNode
     }
 
+    //This function is used to add a node to a tree while ensuring that the tree remains balanced.
+    //It recursively traverses the tree until it finds the correct position for the new node,
+    // and then calls balance to balance the tree.
     protected fun balancedAdd(initNode: NodeType?, node: NodeType): NodeType? {
 
         if (initNode == null) {
@@ -32,6 +38,8 @@ abstract class AbstractTree<T : Comparable<T>, NodeType : AbstractNode<T, NodeTy
         return balance(initNode)
     }
 
+    //This function is used to remove a node from a tree while ensuring that the tree remains balanced.
+    // It recursively traverses the tree until it finds the node to be removed, and then calls
     protected fun balancedDelete(initNode: NodeType?, node: NodeType): NodeType? {
         if (initNode == null) {
             return null
@@ -57,6 +65,7 @@ abstract class AbstractTree<T : Comparable<T>, NodeType : AbstractNode<T, NodeTy
         return balance(initNode)
     }
 
+    //This function is used to check if a node matches with the same value as
     protected fun contains(initNode: NodeType?, node: NodeType): NodeType? {
         if (initNode == null) {
             return null
@@ -71,6 +80,7 @@ abstract class AbstractTree<T : Comparable<T>, NodeType : AbstractNode<T, NodeTy
         }
     }
 
+    //This function returns the node with the smallest value in the subtree rooted at the specified node.
     protected fun getMinimal(node: NodeType): NodeType {
         var minNode = node
         while (true) {
@@ -79,6 +89,7 @@ abstract class AbstractTree<T : Comparable<T>, NodeType : AbstractNode<T, NodeTy
         return minNode
     }
 
+    //This function returns the node with the largest value in the subtree rooted at the specified node.
     protected fun getMaximal(node: NodeType): NodeType {
         var maxNode = node
         while (true) {
@@ -87,6 +98,7 @@ abstract class AbstractTree<T : Comparable<T>, NodeType : AbstractNode<T, NodeTy
         return maxNode
     }
 
+    //This function performs a left rotation on the specified node, changing its position to its right child node.
     protected fun rotateLeft(node: NodeType): NodeType? {
         val rightChild = node.right
         val secondSubtree = rightChild?.left
@@ -97,6 +109,7 @@ abstract class AbstractTree<T : Comparable<T>, NodeType : AbstractNode<T, NodeTy
         return rightChild
     }
 
+    //This function performs a right rotation for the specified node, changing its position to its left child.
     protected fun rotateRight(node: NodeType): NodeType? {
         val leftChild = node.left
         val secondSubtree = leftChild?.right
@@ -107,6 +120,7 @@ abstract class AbstractTree<T : Comparable<T>, NodeType : AbstractNode<T, NodeTy
         return leftChild
     }
 
+    //This function replaces the specified child node of a node with a new child node
     protected fun replaceChild(child: NodeType, newChild: NodeType?): NodeType? {
         if (child == root) {
             root = newChild
@@ -122,6 +136,9 @@ abstract class AbstractTree<T : Comparable<T>, NodeType : AbstractNode<T, NodeTy
         return newChild
     }
 
+    //This function returns a preview of the tree as a list of nodes.
+    // It uses the walk internal function to recursively traverse the tree in advance
+    // and add each node to the list.
     fun preOrder(): List<NodeType> {
         val result = mutableListOf<NodeType>()
         fun walk(node: NodeType, lst: MutableList<NodeType>) {
