@@ -6,6 +6,9 @@ on:
       - main
       - release
 
+permissions:
+  contents: read
+
 jobs:
   build:
     runs-on: ${{ matrix.os }}
@@ -20,7 +23,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: '17'
-          distribution: 'temurin'
+          distribution: zulu
       - name: Build & test with Gradle
         uses: gradle/gradle-build-action@v2
         with:
