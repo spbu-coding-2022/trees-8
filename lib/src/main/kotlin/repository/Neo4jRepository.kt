@@ -27,6 +27,7 @@ class Neo4jRepo<T : Comparable<T>,
     private val sessionFactory = SessionFactory(configuration, "repository")
     private val session = sessionFactory.openSession()
 
+    //converts Neo4jNodeEntity to SerializableNode.
     private fun Neo4jNodeEntity.toSerializableNode(): SerializableNode {
         return SerializableNode(
             data,
@@ -36,6 +37,7 @@ class Neo4jRepo<T : Comparable<T>,
         )
     }
 
+    //converts Neo4jNodeEntity to a node
     private fun Neo4jNodeEntity.deserialize(parent: NodeType? = null): NodeType? {
         val node = strategy.createNode(this.toSerializableNode())
         node?.parent = parent
@@ -44,6 +46,7 @@ class Neo4jRepo<T : Comparable<T>,
         return node
     }
 
+    //converts SerializableTree to Neo4jTreeEntity.
     private fun SerializableNode.toEntity(): Neo4jNodeEntity {
         return Neo4jNodeEntity(
             data,
@@ -53,6 +56,7 @@ class Neo4jRepo<T : Comparable<T>,
         )
     }
 
+    //converts Neo4jTreeEntity to SerializableTree.
     private fun Neo4jTreeEntity.toTree(): SerializableTree {
         return SerializableTree(
             name,
@@ -69,12 +73,14 @@ class Neo4jRepo<T : Comparable<T>,
         )
     }
 
+    //saves the tree with the specified name to the database.
     override fun save(name: String, tree: TreeType) {
         deleteByName(name)
         val entityTree = tree.toSerializableTree(name).toEntity()
         session.save(entityTree)
     }
 
+    //is used to get a list of trees from the database that match the specified filtering options.
     private fun findByVerboseName(name: String) = session.loadAll(
         Neo4jTreeEntity::class.java,
         Filters().and(
@@ -85,6 +91,7 @@ class Neo4jRepo<T : Comparable<T>,
         -1
     )
 
+    //loads the tree with the specified name from the database.
     override fun loadByName(name: String): TreeType {
         val tree = findByVerboseName(name).singleOrNull()
         val result = strategy.createTree().apply {
@@ -93,6 +100,7 @@ class Neo4jRepo<T : Comparable<T>,
         return result
     }
 
+    //removes the tree with the specified name from the database.
     override fun deleteByName(name: String) {
         session.query(
             "MATCH toDelete=(" +
@@ -102,6 +110,7 @@ class Neo4jRepo<T : Comparable<T>,
         )
     }
 
+    //returns a list of the names of all saved trees in the database.
     override fun getNames(): List<String> = session.loadAll(
         Neo4jTreeEntity::class.java,
         Filter("typeOfTree", ComparisonOperator.EQUALS, strategy.typeOfTree),

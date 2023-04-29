@@ -19,6 +19,7 @@ class RBStrategy<T : Comparable<T>>(
 ) : Serialization<T, RBNode<T>, RBTree<T>, Color>(serializeData, deserializeData) {
     override val typeOfTree: TypeOfTree = TypeOfTree.RB_TREE
 
+    //method that creates an AVL tree node from the passed SerializableNode, which was obtained as a result of serialization.
     override fun createNode(node: SerializableNode?): RBNode<T>? = node?.let {
         RBNode(
             data = deserializeValue(node.data),
@@ -28,6 +29,7 @@ class RBStrategy<T : Comparable<T>>(
         )
     }
 
+    //method that deserializes the node's metadata (in this case, the node's height). Returns the deserialized metadata.
     override fun deserializeMetadata(metadata: Metadata): Color {
         return when (metadata.value) {
             "RED" -> Color.RED
@@ -36,6 +38,7 @@ class RBStrategy<T : Comparable<T>>(
         }
     }
 
+    //method that serializes the node's metadata (in this case, the node's height). Returns the serialized metadata.
     override fun serializeMetadata(node: RBNode<T>): Metadata {
         return Metadata(
             when (node.color) {
@@ -45,5 +48,6 @@ class RBStrategy<T : Comparable<T>>(
         )
     }
 
+    //method that creates an AVL tree. Returns a new  tree of type RBTree<T>.
     override fun createTree() = RBTree<T>()
 }
