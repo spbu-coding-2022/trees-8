@@ -90,7 +90,7 @@ class AVLTreeTest {
             newTree.add(stringIntKeyValue)
             assertEquals(
                 stringIntKeyValue.value,
-                newTree.get(KeyValue(stringIntKeyValue.key, null))?.value,
+                newTree.get(KeyValue(stringIntKeyValue.key, 0))?.value,
                 "Values should be equals"
             )
         }

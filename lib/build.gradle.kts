@@ -19,6 +19,7 @@ plugins {
 
 dependencies {
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.gson)
 
     implementation(libs.exposed.core)
     implementation(libs.exposed.dao)
