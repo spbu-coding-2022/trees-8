@@ -5,9 +5,8 @@
 
 package repository
 
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import repository.jsonEntities.JsonNode
 import repository.jsonEntities.JsonTree
 import repository.serialization.SerializableNode
@@ -19,25 +18,21 @@ import java.io.File
 import java.io.FileNotFoundException
 
 //creates a new JsonRepository object with the given strategy and dirPath. strategy
-class JsonRepository<T : Comparable<T>,
-        NodeType : AbstractNode<T, NodeType>,
-        TreeType : AbstractTree<T, NodeType>>
+class JsonRepository<T : Comparable<T>, NodeType : AbstractNode<T, NodeType>, TreeType : AbstractTree<T, NodeType>>
     (
     //serialization strategy for working with trees and nodes.
     strategy: Serialization<T, NodeType, TreeType, *>,
     //path to the directory where tree files will be stored in JSON format.
-    dirPath: String
+    private val dirPath: String, private val filename: String
 ) : Repository<T, NodeType, TreeType>(strategy) {
 
-    private val dirPath = "$dirPath/${strategy.typeOfTree.name.lowercase()}"
+    private val typeToken = object : TypeToken<MutableList<JsonTree>>() {}.type
+
 
     //function to convert JsonNode to SerializableNode.
     private fun JsonNode.toSerializableNode(): SerializableNode {
         return SerializableNode(
-            data,
-            metadata,
-            left?.toSerializableNode(),
-            right?.toSerializableNode()
+            data, metadata, left?.toSerializableNode(), right?.toSerializableNode()
         )
     }
 
@@ -53,37 +48,40 @@ class JsonRepository<T : Comparable<T>,
     //function to convert SerializableNode to JsonNode.
     private fun SerializableNode.toJsonNode(): JsonNode {
         return JsonNode(
-            data,
-            metadata,
-            left?.toJsonNode(),
-            right?.toJsonNode()
+            data, metadata, left?.toJsonNode(), right?.toJsonNode()
         )
     }
 
     //function to convert SerializableTree to JsonTree
     private fun SerializableTree.toJsonTree(): JsonTree {
         return JsonTree(
-            name,
-            typeOfTree,
-            root?.toJsonNode()
+            name, typeOfTree, root?.toJsonNode()
         )
     }
 
     //method for getting a list of tree names.
-    override fun getNames(): List<String> =
-        File(dirPath).listFiles()?.map {
-            Json.decodeFromString<JsonTree>(it.readText()).name
-        } ?: listOf()
+    override fun getNames(): List<String> {
+        try {
+            File(dirPath, filename).run {
+                val names = Gson().fromJson<MutableList<JsonTree>>(readText(), typeToken)
+                    ?.filter { it.typeOfTree == strategy.typeOfTree }?.map { it.name }
+                return names ?: listOf()
+            }
+        } catch (_: FileNotFoundException) {
+            return listOf()
+        }
+    }
 
     //method to load a tree by name
     override fun loadByName(name: String): TreeType? {
         val json = try {
-            File(dirPath, "${name}.json").readText()
+            File(dirPath, filename).readText()
         } catch (_: FileNotFoundException) {
             return null
         }
 
-        val jsonTree = Json.decodeFromString<JsonTree>(json)
+        val jsonTree = Gson().fromJson<MutableList<JsonTree>>(json, typeToken)
+            ?.firstOrNull { it.name == name && it.typeOfTree == strategy.typeOfTree } ?: return null
         return strategy.createTree().apply {
             root = jsonTree.root?.deserialize()
         }
@@ -93,15 +91,29 @@ class JsonRepository<T : Comparable<T>,
     override fun save(name: String, tree: TreeType) {
         val jsonTree = tree.toSerializableTree(name).toJsonTree()
 
+        deleteByName(name)
+
         File(dirPath).mkdirs()
-        File(dirPath, "${name}.json").run {
+        File(dirPath, filename).run {
             createNewFile()
-            writeText(Json.encodeToString(jsonTree))
+            var trees = Gson().fromJson<MutableList<JsonTree>>(readText(), typeToken)
+            if (trees == null) {
+                trees = mutableListOf()
+            }
+            trees.add(jsonTree)
+            writeText(Gson().toJson(trees))
         }
     }
 
     //a method for deleting a tree by name
     override fun deleteByName(name: String) {
-        File(dirPath, "${name}.json").delete()
+        try {
+            File(dirPath, filename).run {
+                val trees = Gson().fromJson<MutableList<JsonTree>>(readText(), typeToken) ?: mutableListOf()
+                trees.removeIf { it.name == name && it.typeOfTree == strategy.typeOfTree }
+                writeText(Gson().toJson(trees))
+            }
+        } catch (_: FileNotFoundException) {
+        }
     }
 }

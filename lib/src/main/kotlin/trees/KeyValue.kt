@@ -7,7 +7,7 @@ package trees
 
 class KeyValue<K : Comparable<K>, V>(
     val key: K,
-    var value: V?
+    var value: V,
 ) : Comparable<KeyValue<K, V>> {
 
     //Compares KeyValue objects based on their keys.
