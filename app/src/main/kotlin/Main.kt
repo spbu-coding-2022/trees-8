@@ -10,6 +10,7 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowPosition
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
+import app.app
 import java.awt.Dimension
 
 fun main() = application {
@@ -23,7 +24,7 @@ fun main() = application {
 
     ) {
         window.minimumSize = Dimension(700, 700)
-        run(window)
+        app(window)
     }
 //    val username = "neo4j"
 //    val password = "isabel-except-toronto-monaco-never-5754" // insert password to database here
