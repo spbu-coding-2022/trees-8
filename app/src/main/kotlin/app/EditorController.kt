@@ -25,50 +25,52 @@ class EditorController<NodeType : AbstractNode<NodeDataGUI, NodeType>>(
     private val name: String,
 ) {
 
-    var drawableRoot: DrawableNode? by mutableStateOf(toDrawable(tree?.root))
+    var drawableRoot: DrawableNode? by mutableStateOf(toDrawableNode(tree?.root))
         private set
 
     fun initTree() {
-        drawableRoot = tree?.root?.let { toDrawable(it, savePosition = true) }
+        drawableRoot = tree?.root?.let { toDrawableNode(it, savePosition = true) }
     }
 
     fun saveTree() {
-        fun copyCoordinates(node: NodeType, drawableNode: DrawableNode?) {
+        fun saveCoordinates(node: NodeType, drawableNode: DrawableNode?) {
             if (drawableNode == null) {
                 return
             }
-            node.left?.let { copyCoordinates(it, drawableNode.left) }
+            node.left?.let { saveCoordinates(it, drawableNode.left) }
             node.data.x = drawableNode.x
             node.data.y = drawableNode.y
-            node.right?.let { copyCoordinates(it, drawableNode.right) }
+            node.right?.let { saveCoordinates(it, drawableNode.right) }
         }
 
-        copyCoordinates(tree?.root as NodeType, drawableRoot)
-        repository?.save(name, tree)
+        tree?.root?.let { saveCoordinates(it, drawableRoot) }
+        if (tree != null) {
+            repository?.save(name, tree)
+        }
     }
 
     fun add(key: Int, value: String) {
         tree?.add(NodeDataGUI(KeyValue(key, value)))
-        drawableRoot = tree?.root?.let { toDrawable(it) }
+        drawableRoot = tree?.root?.let { toDrawableNode(it) }
     }
 
     fun delete(key: Int) {
         tree?.delete(NodeDataGUI(KeyValue(key, "")))
-        drawableRoot = tree?.root?.let { toDrawable(it) }
+        drawableRoot = tree?.root?.let { toDrawableNode(it) }
     }
 
     fun contains(key: Int) {
         val res = tree?.contains(NodeDataGUI(KeyValue(key, "")))
     }
 
-    private fun toDrawable(root: NodeType?, savePosition: Boolean = false): DrawableNode? {
+    private fun toDrawableNode(root: NodeType?, savePosition: Boolean = false): DrawableNode? {
         if (root == null) {
             return null
         }
 
         val drawRoot = DrawableNode(root.data.data.key, root.data.data.value)
 
-        fun calcCoordinates(
+        fun calculateCoordinates(
             node: NodeType,
             drawableNode: DrawableNode,
             offsetX: Int,
@@ -77,7 +79,7 @@ class EditorController<NodeType : AbstractNode<NodeDataGUI, NodeType>>(
             var resX = offsetX
             node.left?.let { left ->
                 drawableNode.left = DrawableNode(left.data.data.key, left.data.data.value).also { drawLeft ->
-                    resX = calcCoordinates(left, drawLeft, offsetX, curH + 1) + 1
+                    resX = calculateCoordinates(left, drawLeft, offsetX, curH + 1) + 1
                 }
             }
 
@@ -92,18 +94,18 @@ class EditorController<NodeType : AbstractNode<NodeDataGUI, NodeType>>(
 
             node.right?.let { right ->
                 drawableNode.right = DrawableNode(right.data.data.key, right.data.data.value).also { drawRight ->
-                    resX = calcCoordinates(right, drawRight, resX + 1, curH + 1)
+                    resX = calculateCoordinates(right, drawRight, resX + 1, curH + 1)
                 }
             }
 
             return resX
         }
-        calcCoordinates(root as NodeType, drawRoot, 0, 0)
+        calculateCoordinates(root, drawRoot, 0, 0)
         return drawRoot
     }
 
     fun dragNode(node: DrawableNode, dragAmount: DpOffset) {
-        (node as? DrawableNode)?.let {
+        (node).let {
             node.x += dragAmount.x
             node.y += dragAmount.y
         }

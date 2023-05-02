@@ -23,5 +23,4 @@ class DrawableNode(
 ) {
     var x by mutableStateOf(x)
     var y by mutableStateOf(y)
-
 }
