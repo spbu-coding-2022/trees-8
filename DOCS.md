@@ -12,10 +12,10 @@ Any `Comparable` data can be stored in trees.
 We also provide access to the `KeyValue` class, which allows you to store a key-value pair in the nodes of the tree.
 
 ```kotlin
-import app.trees.trees.AVLTree
-import app.trees.trees.BSTree
-import app.trees.trees.RBTree
-import app.trees.KeyValue
+import lib.trees.AVLTree
+import lib.trees.RBTree
+import lib.trees.BSTree
+import lib.trees.KeyValue
 
 val alvTree = AVLTree<Int>() // instantiate empty AVL tree
 val bsTree = BSTree<String>() // instantiate empty simple tree
@@ -58,15 +58,15 @@ avlTree.root?.right?.left?.data // 20
 
 ## Storing Trees
 
-`teemEight` provides ~~`JsonRepository`, `SqlRepository` and~~ `Neo4jRepository` to save & load trees.
+`teemEight` provides `JsonRepository`, `SqlRepository` and `Neo4jRepository` to save & load trees.
 
 Each instance of repository is used to store exactly 1 tree type. To store different tree types several repositories can
 be instantiated.
 Repository must be provided with `Serialization` which describes how to serialize & deserialize any particular
 type of tree.
 
-`bstrees` is shipped with `AVLStrategy`, ~~`RBStrategy` and `SimpleStrategy`~~ to serialize & deserialize AVL trees,
-~~Red-black trees and Simple BSTs~~ respectively. As these strategies don't know anything about the data type stored in
+`bstrees` is shipped with `AVLStrategy`, `RBStrategy` and `SimpleStrategy` to serialize & deserialize AVL trees,
+Red-black trees and Simple BSTs respectively. As these strategies don't know anything about the data type stored in
 trees' nodes, user must provide `serializeData` and `deserializeData` functions to them.
 
 Different tree types can be stored in the same database (directory) by creating several repositories and passing them
@@ -84,9 +84,6 @@ Before using this, you must have [Docker](https://www.docker.com/) (also see [do
 4. Change the password
 5. You got this
 
-Please note that storing 1 tree type (RB, AVL, Simple) with different data type in the same database (directory) is not
-supported.
-
 #### Example
 
 ```kotlin
@@ -102,7 +99,7 @@ fun serializeInt(data: Int) = SerializableValue(data.toString())
 fun deserializeInt(data: SerializableValue) = data.value.toInt()
 
 val avlRepo = Neo4jRepo(AVLStrategy(::serializeInt, ::deserializeInt), conf)
-// !!! storing AVLTree<Int> and AVLTree<String> in the same db is unsupported
+
 
 val tree = AVLTree<Int>()
 val randomizer = Random(42)

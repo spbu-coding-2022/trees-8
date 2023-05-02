@@ -27,7 +27,7 @@ or `neo4j` databases.
     - [x] Neo4j
     - [x] Sqlite
     - [x] json
-- [ ] GUI
+- [x] GUI
 
 ## Building
 
