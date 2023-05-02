@@ -39,7 +39,19 @@ To build this project run
 
 ## How to use
 
-See official [documentation](/DOCS.md)
+If you need access to trees, see official [documentation](/DOCS.md)
+
+To run our tree viewer
+
+```bash
+./gradlew run
+```
+
+The viewer is currently only able to open trees stored in a json file.
+Create an empty .json file and open it in the application, enter any name for the tree
+and it will be created. You can drag and drop tree nodes, add and remove values,
+save the state of the tree for later loading. If there are available trees in the .json file, they will be in the
+dropdown list.
 
 ## Feedback
 
