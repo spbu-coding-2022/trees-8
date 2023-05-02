@@ -43,7 +43,7 @@ fun OpenTree(
 ) {
     MaterialTheme {
         Scaffold(topBar = {
-            TopAppBar(title = { Text("Выберите тип дерева") })
+            TopAppBar(title = { Text("Tree viewer by teemEight") })
         }) {
             Column(Modifier.padding(10.dp)) {
                 DropDownTextFiled("Type of database", listOfDatabase, onTypeOfDatabaseChanged)
@@ -83,7 +83,7 @@ fun FilePicker(
             onClick = onFilePicked
         ) {
             Text(
-                text = "Выберите файл",
+                text = "Choose File",
             )
         }
         Spacer(modifier = Modifier.width(8.dp))
@@ -107,13 +107,13 @@ fun PathToStorage(
                 onPathChanged(it)
                 path = it
             },
-            label = { Text(text = "Введите путь к базе") },
+            label = { Text(text = "Path to database") },
             modifier = Modifier.fillMaxWidth()
         )
         Button(
             onClick = onLoadDatabase
         ) {
-            Text("Загрузить")
+            Text("Load")
         }
     }
 }
