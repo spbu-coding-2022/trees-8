@@ -1,40 +1,39 @@
-# Внесение правок
+# Making edits
 
-## Основные советы
+## Basic Tips
 
-1. Не используйте merge, только rebase (для сохранения линейной истории коммитов)
-2. Не менять чужие ветки без крайней необходимости
-3. Перепроверьте историю коммитов перед созданием пулл реквеста
-4. **Перепроверьте, что вы в правильной ветке**, никогда не коммитьте напрямую в main
+1. Don't use merge, only rebase (to keep a linear commit history)
+2. Do not change other people's branches unless absolutely necessary
+3. Recheck your commit history before creating a pull request
+4. **Check you're on the right branch**, never commit directly in main
 
-## Правила добавления коммитов
+## Rules for adding commits
 
-Коммиты добавляются в соответствии с conventional commits. Т.е
+Commits are added according to conventional commits. Those
 `<type>(<scope>): <body>`.
 
-Поле `<type>` должно принимать одно из этих значений:
+The `<type>` field must take one of these values:
 
-* `feat` для добавления новой функциональности
-* `fix` для исправления бага в программе
-* `refactor` для рефакторинга кода, например, переименования переменной
-* `test` для добавления тестов, их рефакторинга
-* `struct` для изменений связанных с изменением структуры проекта (НО НЕ КОДА), например изменение
-  расположения папок
-* `ci` для различных задач ci/cd
+* `feat` to add new functionality
+* `fix` to fix a bug in the program
+* `refactor` for code refactoring, such as renaming a variable
+* `test` to add tests, refactor them
+* `struct` for changes related to a change in the structure of the project (BUT NOT CODE), for example, changing
+  folder locations
+* `ci` for various ci/cd tasks
 
-Поле `<body>` содержит суть изменений в повелительном наклонении настоящего времени на английском языке без точки в
-конце, первое слово - глагол с маленькой буквы.
-Примеры:
+The `<body>` field contains the gist of the changes in the present imperative in English without the dot in
+at the end, the first word is a verb with a small letter.
+Examples:
 
-* Хорошо: "feat: Add module for future BST implementations"
-* Плохо: "Added module for future BST implementations."
+* Good: "feat: Add module for future BST implementations"
+* Bad: "Added module for future BST implementations."
 
-## Правила для пулл реквестов
+## Rules for pull requests
 
-**НЕ ТЫКАТЬ НА ЗЕЛЕНУЮ КНОПОЧКУ `REBASE AND MERGE` БЕЗ РЕВЬЮ**
+**Forbidden** to merge your pull request into the branch yourself.
 
-**Запрещено** сливать свой пулл реквест в ветку самостоятельно.
+If you click on the green button, then **make sure** that it says `REBASE AND MERGE`
 
-Если тыкаете на зеленую кнопочку, то **убедитесь**, что на ней написано `REBASE AND MERGE`
-
-Ревью происходит в виде комметариев к пулл реквестам, обсуждения в чате команды и личном общении.
+The review takes place in the form of comments to pull requests, discussions in the team chat and personal
+communication.
