@@ -25,18 +25,14 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import visualizer.editor.graph.GraphNode
-import visualizer.editor.graph.GraphState
-import visualizer.editor.graph.ScreenScale
-import visualizer.editor.graph.rememberGraphState
 
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun TreeGraph(
-    root: ImDrawableNode,
+    root: DrawableNode,
     nodeSize: Dp,
-    onNodeDrag: (ImDrawableNode, DpOffset) -> Unit,
+    onNodeDrag: (DrawableNode, DpOffset) -> Unit,
     graphState: GraphState = rememberGraphState()
 ) {
     val currentDensity = LocalDensity.current
@@ -77,7 +73,7 @@ fun TreeGraph(
             nodeSize = nodeSize,
             onNodeDrag = onNodeDrag,
             sDragProvider = { graphState.screenDrag },
-            sScaleProvider = { graphState.screenScale }
+            sScaleProvider = { graphState.screenZoom }
         )
 
         TextButton(
@@ -91,12 +87,12 @@ fun TreeGraph(
 
 @Composable
 fun drawTree(
-    node: ImDrawableNode?,
-    parent: ImDrawableNode? = null,
+    node: DrawableNode?,
+    parent: DrawableNode? = null,
     nodeSize: Dp,
-    onNodeDrag: (ImDrawableNode, DpOffset) -> Unit,
+    onNodeDrag: (DrawableNode, DpOffset) -> Unit,
     sDragProvider: () -> Offset,
-    sScaleProvider: () -> ScreenScale
+    sScaleProvider: () -> ScreenZoom
 ) {
     node?.let {
         parent?.let { parent ->

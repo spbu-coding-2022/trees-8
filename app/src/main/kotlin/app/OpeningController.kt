@@ -3,9 +3,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+package app
+
 import androidx.compose.ui.awt.ComposeWindow
-import app.NodeDataGUI
-import app.TypeOfDatabase
 import repository.JsonRepository
 import repository.Repository
 import repository.serialization.TypeOfTree
@@ -21,7 +21,7 @@ import trees.nodes.AbstractNode
 import java.awt.FileDialog
 import java.io.File
 
-class Controller<
+class OpeningController<
         NodeType : AbstractNode<NodeDataGUI, NodeType>,
         TreeType : AbstractTree<NodeDataGUI, NodeType>,
         SerializationType : Serialization<NodeDataGUI, NodeType, TreeType, *>> {

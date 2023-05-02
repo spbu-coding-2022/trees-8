@@ -11,7 +11,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import app.graph.DrawableNode
-import app.graph.ImDrawableNode
 import repository.Repository
 import trees.AbstractTree
 import trees.KeyValue
@@ -26,19 +25,15 @@ class EditorController<NodeType : AbstractNode<NodeDataGUI, NodeType>>(
     private val name: String,
 ) {
 
-    var drawableRoot: ImDrawableNode? by mutableStateOf(toDrawable(tree?.root))
+    var drawableRoot: DrawableNode? by mutableStateOf(toDrawable(tree?.root))
         private set
 
     fun initTree() {
-        drawableRoot = tree?.root?.let { toDrawable(it, respectXY = true) }
-    }
-
-    fun resetTree() {
-        drawableRoot = tree?.root?.let { toDrawable(it) }
+        drawableRoot = tree?.root?.let { toDrawable(it, savePosition = true) }
     }
 
     fun saveTree() {
-        fun copyCoordinates(node: NodeType, drawableNode: ImDrawableNode?) {
+        fun copyCoordinates(node: NodeType, drawableNode: DrawableNode?) {
             if (drawableNode == null) {
                 return
             }
@@ -58,14 +53,15 @@ class EditorController<NodeType : AbstractNode<NodeDataGUI, NodeType>>(
     }
 
     fun delete(key: Int) {
-        val res = tree?.delete(NodeDataGUI(KeyValue(key, "")))
+        tree?.delete(NodeDataGUI(KeyValue(key, "")))
+        drawableRoot = tree?.root?.let { toDrawable(it) }
     }
 
     fun contains(key: Int) {
         val res = tree?.contains(NodeDataGUI(KeyValue(key, "")))
     }
 
-    private fun toDrawable(root: NodeType?, respectXY: Boolean = false): ImDrawableNode? {
+    private fun toDrawable(root: NodeType?, savePosition: Boolean = false): DrawableNode? {
         if (root == null) {
             return null
         }
@@ -85,8 +81,8 @@ class EditorController<NodeType : AbstractNode<NodeDataGUI, NodeType>>(
                 }
             }
 
-            drawableNode.x = if (respectXY) node.data.x else ((60.dp * 2 / 3) * resX)
-            drawableNode.y = if (respectXY) node.data.y else ((60.dp * 5 / 4) * curH)
+            drawableNode.x = if (savePosition) node.data.x else ((60.dp * 2 / 3) * resX)
+            drawableNode.y = if (savePosition) node.data.y else ((60.dp * 5 / 4) * curH)
             if (node is RBNode<*>) {
                 drawableNode.color = when (node.color) {
                     Color.RED -> androidx.compose.ui.graphics.Color.Red
@@ -106,7 +102,7 @@ class EditorController<NodeType : AbstractNode<NodeDataGUI, NodeType>>(
         return drawRoot
     }
 
-    fun dragNode(node: ImDrawableNode, dragAmount: DpOffset) {
+    fun dragNode(node: DrawableNode, dragAmount: DpOffset) {
         (node as? DrawableNode)?.let {
             node.x += dragAmount.x
             node.y += dragAmount.y
