@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2023 teemEight
- * SPDX-License-Identifier: Apache-2.0
+ * Copyright (c) 2023 teem-4
+ * SPDX-License-Identifier: MIT
  */
 
 package repository.serialization

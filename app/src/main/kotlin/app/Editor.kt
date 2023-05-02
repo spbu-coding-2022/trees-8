@@ -100,21 +100,21 @@ fun Menu(
             horizontalArrangement = Arrangement.SpaceAround
         ) {
             Button(onClick = {
-                onAdd(keyString.toInt(), valueString)
+                if (keyString.isNotEmpty()) onAdd(keyString.toInt(), valueString)
                 keyString = ""
                 valueString = ""
             }) {
                 Icon(Icons.Default.Add, contentDescription = "Add")
             }
             Button(onClick = {
-                onContains(keyString.toInt())
+                if (keyString.isNotEmpty()) onContains(keyString.toInt())
                 keyString = ""
                 valueString = ""
             }) {
                 Icon(Icons.Default.Search, contentDescription = "Contains")
             }
             Button(onClick = {
-                onDelete(keyString.toInt())
+                if (keyString.isNotEmpty()) onDelete(keyString.toInt())
                 keyString = ""
                 valueString = ""
             }) {
