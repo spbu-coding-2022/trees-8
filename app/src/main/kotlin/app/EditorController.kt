@@ -26,7 +26,7 @@ class EditorController<NodeType : AbstractNode<NodeDataGUI, NodeType>>(
     private val name: String,
 ) {
 
-    var drawableRoot: ImDrawableNode? by mutableStateOf(toDrawable(tree?.root as NodeType))
+    var drawableRoot: ImDrawableNode? by mutableStateOf(toDrawable(tree?.root))
         private set
 
     fun initTree() {

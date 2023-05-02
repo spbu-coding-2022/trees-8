@@ -39,6 +39,7 @@ fun OpenTree(
     onNameChanged: (String) -> Unit,
     onLoadTree: () -> Unit,
     onLoadDatabase: () -> Unit,
+    isEnabled: Boolean = false,
 ) {
     MaterialTheme {
         Scaffold(topBar = {
@@ -58,7 +59,8 @@ fun OpenTree(
                     DropDownTextFiled("Name of tree", listOfNames, onNameChanged, false)
                     Button(
                         onClick = onLoadTree,
-                        modifier = Modifier.padding(horizontal = 10.dp)
+                        modifier = Modifier.padding(horizontal = 10.dp),
+                        enabled = isEnabled,
                     ) {
                         Text("Let's go!")
                     }
