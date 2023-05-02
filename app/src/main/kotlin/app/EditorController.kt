@@ -21,7 +21,7 @@ import trees.nodes.RBNode
 
 
 class EditorController<NodeType : AbstractNode<NodeDataGUI, NodeType>>(
-    private val tree: AbstractTree<NodeDataGUI, *>?,
+    private val tree: AbstractTree<NodeDataGUI, NodeType>?,
     private val repository: Repository<NodeDataGUI, *, AbstractTree<NodeDataGUI, *>>?,
     private val name: String,
 ) {
@@ -30,16 +30,16 @@ class EditorController<NodeType : AbstractNode<NodeDataGUI, NodeType>>(
         private set
 
     fun initTree() {
-        drawableRoot = tree?.root?.let { toDrawable(it as NodeType, respectXY = true) }
+        drawableRoot = tree?.root?.let { toDrawable(it, respectXY = true) }
     }
 
     fun resetTree() {
-        drawableRoot = tree?.root?.let { toDrawable(it as NodeType) }
+        drawableRoot = tree?.root?.let { toDrawable(it) }
     }
 
     fun saveTree() {
         fun copyCoordinates(node: NodeType, drawableNode: ImDrawableNode?) {
-            if (node == null || drawableNode == null) {
+            if (drawableNode == null) {
                 return
             }
             node.left?.let { copyCoordinates(it, drawableNode.left) }
@@ -49,14 +49,12 @@ class EditorController<NodeType : AbstractNode<NodeDataGUI, NodeType>>(
         }
 
         copyCoordinates(tree?.root as NodeType, drawableRoot)
-        if (tree != null) {
-            repository?.save(name, tree)
-        }
+        repository?.save(name, tree)
     }
 
     fun add(key: Int, value: String) {
         tree?.add(NodeDataGUI(KeyValue(key, value)))
-        drawableRoot = tree?.root?.let { toDrawable(it as NodeType) }
+        drawableRoot = tree?.root?.let { toDrawable(it) }
     }
 
     fun delete(key: Int) {
