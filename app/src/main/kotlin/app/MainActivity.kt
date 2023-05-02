@@ -5,8 +5,6 @@
 
 package app
 
-import Controller
-import Editor
 import androidx.compose.runtime.*
 import androidx.compose.ui.awt.ComposeWindow
 import com.google.gson.JsonSyntaxException
@@ -49,7 +47,7 @@ fun app(window: ComposeWindow) {
     val typeOfDatabaseState = remember { mutableStateOf(typesOfDatabase[stringTypeOfDatabaseState.value]) }
 
     val state = remember { mutableStateOf(States.OPENING_TREE) }
-    val controller by remember { mutableStateOf(Controller()) }
+    val openingController by remember { mutableStateOf(OpeningController()) }
     val fileState = remember { mutableStateOf<File?>(null) }
 
     val nameState = remember { mutableStateOf("") }
@@ -57,10 +55,10 @@ fun app(window: ComposeWindow) {
     fun loadTrees() {
         if (fileState.value?.name?.endsWith(".json") == true) {
             try {
-                controller.loadDatabase(
+                openingController.loadDatabase(
                     typeOfDatabaseState.value, typeOfTree.value, fileState.value?.parent, fileState.value?.name
                 )
-                listNames = controller.getNamesOfTrees()
+                listNames = openingController.getNamesOfTrees()
             } catch (_: JsonSyntaxException) {
                 fileState.value = null
             }
@@ -69,47 +67,68 @@ fun app(window: ComposeWindow) {
         }
     }
 
+    fun resetStates() {
+        fileState.value = null
+        nameState.value = ""
+        typeOfDatabaseState.value = null
+        stringTypeOfDatabaseState.value = ""
+        typeOfTree.value = null
+        pathState.value = ""
+    }
+
     when (state.value) {
-        States.OPENING_TREE -> OpenTree(
-            listOfDatabase = listOfDatabase,
-            listOfNames = listNames,
-            listOfTypes = listOfTrees,
+        States.OPENING_TREE -> {
+            window.setSize(700, 700)
+            OpenTree(
+                listOfDatabase = listOfDatabase,
+                listOfNames = listNames,
+                listOfTypes = listOfTrees,
 
-            typeOfDatabaseState = typeOfDatabaseState,
-            file = fileState,
+                typeOfDatabaseState = typeOfDatabaseState,
+                file = fileState,
 
-            onTypeOfDatabaseChanged = { newType ->
-                stringTypeOfDatabaseState.value = newType
-                typeOfDatabaseState.value = typesOfDatabase[stringTypeOfDatabaseState.value]
-            },
-            onPathChanged = { newPath -> pathState.value = newPath },
-            onFilePicked = {
-                fileState.value = controller.openFileDialog(
-                    window, "Load a file", listOf(".json"), allowMultiSelection = false
-                )
-                loadTrees()
-            },
-            onNameChanged = { newName -> nameState.value = newName },
-            onTypeChanged = { newType ->
-                typeOfTree.value = typesOfTrees[newType]
-                loadTrees()
-            },
-            onLoadTree = {
-                state.value = States.DRAW_TREE
-                typeOfTree.value?.let { controller.loadTree(it, nameState.value) }
-            },
-            onLoadDatabase = {
-                controller.loadDatabase(
-                    typeOfDatabaseState.value, typeOfTree.value, pathState.value, fileState.value?.name
-                )
-            },
-            isEnabled = (fileState.value != null && nameState.value != "")
-        )
+                onTypeOfDatabaseChanged = { newType ->
+                    resetStates()
+                    stringTypeOfDatabaseState.value = newType
+                    typeOfDatabaseState.value = typesOfDatabase[stringTypeOfDatabaseState.value]
+                },
+                onPathChanged = { newPath -> pathState.value = newPath },
+                onFilePicked = {
+                    fileState.value = openingController.openFileDialog(
+                        window, "Load a file", listOf(".json"), allowMultiSelection = false
+                    )
+                    loadTrees()
+                },
+                onNameChanged = { newName -> nameState.value = newName },
+                onTypeChanged = { newType ->
+                    typeOfTree.value = typesOfTrees[newType]
+                    loadTrees()
+                },
+                onLoadTree = {
+                    state.value = States.DRAW_TREE
+                    typeOfTree.value?.let { openingController.loadTree(it, nameState.value) }
+                },
+                onLoadDatabase = {
+                    openingController.loadDatabase(
+                        typeOfDatabaseState.value, typeOfTree.value, pathState.value, fileState.value?.name
+                    )
+                },
+                isEnabled = (fileState.value != null && nameState.value != "")
+            )
+        }
 
         else -> {
             window.setSize(1080, 800)
             Editor(
-                viewModel = EditorController(controller.tree, controller.repository, nameState.value)
+                editorController = EditorController(
+                    openingController.tree,
+                    openingController.repository,
+                    nameState.value
+                ),
+                onGoHome = {
+                    resetStates()
+                    state.value = States.OPENING_TREE
+                }
             )
         }
     }
