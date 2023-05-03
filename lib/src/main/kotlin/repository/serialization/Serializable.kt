@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 teem-4
+ * Copyright (c) 2023 Yakshigulov Vadim, Dyachkov Vitaliy, Perevalov Efim
  * SPDX-License-Identifier: MIT
  */
 
